@@ -3,63 +3,86 @@ package com.derich.bigfoot
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.derich.bigfoot.ui.composables.TopBar
-import com.derich.bigfoot.ui.theme.BigFootTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.derich.bigfoot.ui.composables.HomeComposable
+import com.derich.bigfoot.ui.composables.PhoneLoginUI
+import com.derich.bigfoot.ui.data.AuthViewModel
+import com.derich.bigfoot.ui.data.BigFootScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    companion object {
+        var mainActivity: MainActivity? = null
+
+        fun getInstance(): MainActivity? = mainActivity
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        mainActivity = this
         super.onCreate(savedInstanceState)
         setContent {
-            BigFootTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    WelcomePage(name = "Alan")
+            val authVm: AuthViewModel = viewModel()
+            // Construct navigation graph here.
+//            PhoneLoginUI(popUpScreen = { HomeComposable() }, viewModel = authVm)
+            val navController = rememberNavController()
+            Scaffold {
+                innerPadding ->
+                val uiState by authVm.signUpState.collectAsState()
+                NavHost(
+                    navController = navController,
+                    startDestination = BigFootScreen.Login.name,
+                    modifier = Modifier.padding(innerPadding)
+                )
+                {
+                    composable(route = BigFootScreen.Login.name) {
+                    PhoneLoginUI(
+                        navigateToHome = { navController.navigate(BigFootScreen.Home.name) },
+                        viewModel = authVm,
+                        {
+                            navController.navigate(BigFootScreen.Login.name)
+                        }
+                    )
                 }
+                    composable(route = BigFootScreen.Home.name) {
+                        HomeComposable()
+                    }
+                }
+
             }
         }
     }
-}
 
-@Composable
-fun WelcomePage(modifier: Modifier = Modifier, name: String) {
-    Scaffold(
-        topBar = {
-            TopBar()
-        }
-    ) {
-            contentPadding ->
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(contentPadding),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center)
-        {
-            Text(text = "Hello $name! Welcome to BigFoot.")
-        }
+    override fun onResume() {
+        super.onResume()
+        mainActivity = this
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    BigFootTheme {
-        WelcomePage(name = "Alan G")
+    override fun onRestart() {
+        super.onRestart()
+        mainActivity = this
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainActivity = null
+    }
+
+
+}
+@Preview
+@Composable
+fun MainPrev(){
+
 }
