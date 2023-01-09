@@ -24,6 +24,9 @@ constructor(private val accountService: AuthService)
     fun authenticatePhone(phone: String) {
         accountService.authenticate(phone)
     }
+    fun resetAuthState() {
+        signUpState.value = Response.NotInitialized
+    }
 
     fun onNumberChange(number: String) {
         _number.value = number

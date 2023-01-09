@@ -100,7 +100,9 @@ fun PhoneLoginUI(
         // If it is the error state, show the error UI
         is Response.Error -> {
             val throwable = (uiState as Response.Error).exception!!
-            ErrorUi(exc = throwable, onRestart = restartLogin)
+            ErrorUi(exc = throwable, onRestart = {
+                viewModel.resetAuthState()
+            })
         }
 
         // You can navigate when the auth process is successful
