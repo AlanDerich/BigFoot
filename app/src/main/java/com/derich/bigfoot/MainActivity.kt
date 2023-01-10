@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.derich.bigfoot.ui.composables.BigFutAppBar
 import com.derich.bigfoot.ui.composables.HomeComposable
 import com.derich.bigfoot.ui.composables.PhoneLoginUI
 import com.derich.bigfoot.ui.data.AuthViewModel
@@ -37,7 +38,11 @@ class MainActivity : ComponentActivity() {
             // Construct navigation graph here.
 //            PhoneLoginUI(popUpScreen = { HomeComposable() }, viewModel = authVm)
             val navController = rememberNavController()
-            Scaffold {
+            Scaffold(
+                topBar = {
+                    BigFutAppBar()
+                }
+            ) {
                 innerPadding ->
                 val uiState by authVm.signUpState.collectAsState()
                 NavHost(
