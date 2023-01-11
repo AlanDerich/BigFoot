@@ -3,6 +3,8 @@ package com.derich.bigfoot.ui.data
 import com.derich.bigfoot.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
@@ -21,4 +23,10 @@ object AppModule {
     @Provides
     fun provideMainActivity(): MainActivity = MainActivity.getInstance() as MainActivity
 
+    @Provides
+    @Singleton
+    fun provideQueryTransactionsByName() = FirebaseFirestore.getInstance()
+        .collectionGroup("Totals")
+        .orderBy("totalAmount", Query.Direction.DESCENDING)
+    //db.collectionGroup("Totals").orderBy("totalAmount", Query.Direction.DESCENDING)
 }

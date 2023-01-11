@@ -3,6 +3,7 @@ package com.derich.bigfoot
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -19,6 +20,7 @@ import com.derich.bigfoot.ui.composables.HomeComposable
 import com.derich.bigfoot.ui.composables.PhoneLoginUI
 import com.derich.bigfoot.ui.data.AuthViewModel
 import com.derich.bigfoot.ui.data.BigFootScreen
+import com.derich.bigfoot.ui.data.ContributionsViewModel
 import com.derich.bigfoot.ui.theme.BigFootTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,6 +37,8 @@ class MainActivity : ComponentActivity() {
         mainActivity = this
         super.onCreate(savedInstanceState)
         setContent {
+            val contributionsViewModel: ContributionsViewModel by viewModels()
+            val dataOrException = contributionsViewModel.data.value
             val authVm: AuthViewModel = viewModel()
             // Construct navigation graph here.
 //            PhoneLoginUI(popUpScreen = { HomeComposable() }, viewModel = authVm)
@@ -63,7 +67,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable(route = BigFootScreen.Home.name) {
-                            HomeComposable()
+                            HomeComposable(dataOrException = dataOrException, viewModel = contributionsViewModel)
                         }
                     }
 
