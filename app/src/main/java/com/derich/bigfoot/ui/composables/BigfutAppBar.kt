@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -22,9 +23,8 @@ fun BigFutAppBar(modifier: Modifier = Modifier.fillMaxWidth()) {
             modifier = Modifier
                 .padding(8.dp)
                 .size(32.dp)
-                .border(width = 2.dp,
-                    color = Color.White,
-                    shape = MaterialTheme.shapes.small))
+                .clip(MaterialTheme.shapes.medium)
+        )
         Text(text = "BigFut",
             style = MaterialTheme.typography.h4,
             color = Color.White)

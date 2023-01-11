@@ -19,6 +19,7 @@ import com.derich.bigfoot.ui.composables.HomeComposable
 import com.derich.bigfoot.ui.composables.PhoneLoginUI
 import com.derich.bigfoot.ui.data.AuthViewModel
 import com.derich.bigfoot.ui.data.BigFootScreen
+import com.derich.bigfoot.ui.theme.BigFootTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,34 +39,37 @@ class MainActivity : ComponentActivity() {
             // Construct navigation graph here.
 //            PhoneLoginUI(popUpScreen = { HomeComposable() }, viewModel = authVm)
             val navController = rememberNavController()
-            Scaffold(
-                topBar = {
-                    BigFutAppBar()
-                }
-            ) {
-                innerPadding ->
-                val uiState by authVm.signUpState.collectAsState()
-                NavHost(
-                    navController = navController,
-                    startDestination = BigFootScreen.Login.name,
-                    modifier = Modifier.padding(innerPadding)
-                )
-                {
-                    composable(route = BigFootScreen.Login.name) {
-                    PhoneLoginUI(
-                        navigateToHome = { navController.navigate(BigFootScreen.Home.name) },
-                        viewModel = authVm,
-                        {
-                            navController.navigate(BigFootScreen.Login.name)
-                        }
-                    )
-                }
-                    composable(route = BigFootScreen.Home.name) {
-                        HomeComposable()
+            BigFootTheme {
+                Scaffold(
+                    topBar = {
+                        BigFutAppBar()
                     }
-                }
+                ) {
+                        innerPadding ->
+                    val uiState by authVm.signUpState.collectAsState()
+                    NavHost(
+                        navController = navController,
+                        startDestination = BigFootScreen.Login.name,
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                    {
+                        composable(route = BigFootScreen.Login.name) {
+                            PhoneLoginUI(
+                                navigateToHome = { navController.navigate(BigFootScreen.Home.name) },
+                                viewModel = authVm,
+                                {
+                                    navController.navigate(BigFootScreen.Login.name)
+                                }
+                            )
+                        }
+                        composable(route = BigFootScreen.Home.name) {
+                            HomeComposable()
+                        }
+                    }
 
+                }
             }
+
         }
     }
 

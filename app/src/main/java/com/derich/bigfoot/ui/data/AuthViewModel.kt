@@ -2,6 +2,8 @@ package com.derich.bigfoot.ui.data
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +22,9 @@ constructor(private val accountService: AuthService)
 
     private val _code: MutableStateFlow<String> = MutableStateFlow("")
     val code: StateFlow<String> get() = _code
+
+    //check if user is signed in
+    val user = Firebase.auth.currentUser
 
     fun authenticatePhone(phone: String) {
         accountService.authenticate(phone)

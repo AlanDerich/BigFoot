@@ -18,6 +18,7 @@ import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.derich.bigfoot.R
 
@@ -67,4 +68,10 @@ fun EnterCodeUI(
         Text(text = stringResource(R.string.enter_digits_code))
     }
 
+}
+
+@Preview
+@Composable
+fun Preview() {
+    EnterCodeUI(code = "1234", onCodeChange = {}, phone = "0712345678", onGo = {})
 }
