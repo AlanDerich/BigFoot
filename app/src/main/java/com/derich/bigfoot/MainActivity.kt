@@ -7,8 +7,6 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -22,6 +20,9 @@ import com.derich.bigfoot.ui.data.AuthViewModel
 import com.derich.bigfoot.ui.data.BigFootScreen
 import com.derich.bigfoot.ui.data.ContributionsViewModel
 import com.derich.bigfoot.ui.theme.BigFootTheme
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,6 +41,12 @@ class MainActivity : ComponentActivity() {
             val contributionsViewModel: ContributionsViewModel by viewModels()
             val dataOrException = contributionsViewModel.data.value
             val authVm: AuthViewModel = viewModel()
+
+            FirebaseApp.initializeApp(/*context=*/this)
+            val firebaseAppCheck = FirebaseAppCheck.getInstance()
+            firebaseAppCheck.installAppCheckProviderFactory(
+                DebugAppCheckProviderFactory.getInstance()
+            )
             // Construct navigation graph here.
 //            PhoneLoginUI(popUpScreen = { HomeComposable() }, viewModel = authVm)
             val navController = rememberNavController()
@@ -50,7 +57,6 @@ class MainActivity : ComponentActivity() {
                     }
                 ) {
                         innerPadding ->
-                    val uiState by authVm.signUpState.collectAsState()
                     NavHost(
                         navController = navController,
                         startDestination = BigFootScreen.Login.name,

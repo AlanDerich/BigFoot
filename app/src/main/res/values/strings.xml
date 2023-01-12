@@ -14,4 +14,5 @@
     <string name="enter_digits_code">Enter codes manually</string>
     <string name="generic_error">Error occured</string>
     <string name="try_">Retry</string>
+    <string name="profile_image_description">User profile image</string>
 </resources>

@@ -10,7 +10,7 @@ import javax.inject.Singleton
 class ContributionsHistoryRepository @Inject constructor(
     private val queryProductsByName: Query
 ) {
-    suspend fun getContributionsFromFirestore(): DataOrException<List<Contributions>, Exception> {
+    suspend fun getContributionsFromFirestone(): DataOrException<List<Contributions>, Exception> {
         val dataOrException = DataOrException<List<Contributions>, Exception>()
         try {
             dataOrException.data = queryProductsByName.get().await().map { document ->

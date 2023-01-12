@@ -12,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import com.derich.bigfoot.R
 import com.derich.bigfoot.ui.data.Contributions
@@ -64,14 +66,15 @@ fun ContributionCard(contribution: Contributions,
                      viewModel: ContributionsViewModel) {
     Row(
         modifier = modifier.padding(8.dp),
-        horizontalArrangement = Arrangement.Start
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painterResource(id = R.drawable.bigfut1),
-            contentDescription = "User profile image",
+            contentDescription = stringResource(R.string.profile_image_description),
             Modifier
                 .clip(MaterialTheme.shapes.medium)
-                .size(64.dp)
+                .size(68.dp)
         )
         UsersColumn(contribution = contribution)
     }
@@ -80,9 +83,9 @@ fun ContributionCard(contribution: Contributions,
     @Composable
     fun UsersColumn(modifier: Modifier = Modifier.padding(8.dp), contribution: Contributions) {
         Column(horizontalAlignment = Alignment.Start, modifier = modifier) {
-            Text(text = contribution.Name!!)
+            Text(text = contribution.Name!!, fontWeight = Bold)
             Spacer(modifier = Modifier.padding(2.dp))
-            Text(text = contribution.totalAmount!!)
+            Text(text = "KSH ${contribution.totalAmount!!}")
             Spacer(modifier = Modifier.padding(2.dp))
             Text(text = contribution.date!!)
         }

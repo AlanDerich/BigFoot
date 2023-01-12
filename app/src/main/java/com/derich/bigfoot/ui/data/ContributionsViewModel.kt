@@ -27,7 +27,7 @@ class ContributionsViewModel @Inject constructor(
     private fun getContributions() {
         viewModelScope.launch {
             loading.value = true
-            data.value = repository.getContributionsFromFirestore()
+            data.value = repository.getContributionsFromFirestone()
             loading.value = false
         }
     }
