@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
             BigFootTheme {
                 Scaffold(
                     topBar = {
-                        BigFutAppBar()
+                        BigFutAppBar(authVm)
                     }
                 ) {
                         innerPadding ->

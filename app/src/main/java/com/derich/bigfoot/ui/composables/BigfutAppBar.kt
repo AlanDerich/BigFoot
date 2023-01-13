@@ -2,8 +2,10 @@ package com.derich.bigfoot.ui.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,17 +16,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.derich.bigfoot.R
+import com.derich.bigfoot.ui.data.AuthViewModel
 
 @Composable
-fun BigFutAppBar(modifier: Modifier = Modifier.fillMaxWidth()) {
-    Row(modifier = modifier.background(color = Color.Blue), verticalAlignment = Alignment.CenterVertically) {
-        Image(painter = painterResource(id = R.drawable.bigfut1),
-            contentDescription = "App Icon",
-            modifier = Modifier
-                .padding(8.dp)
-                .size(32.dp)
-                .clip(MaterialTheme.shapes.medium)
-        )
+fun BigFutAppBar(authVm: AuthViewModel
+                 ,modifier: Modifier = Modifier.fillMaxWidth()) {
+    Row(modifier = modifier.background(color = Color.Blue),
+        verticalAlignment = Alignment.CenterVertically) {
+        //check if user is signed in and set their profile image on top-bar
+            Image(painter = painterResource(id = R.drawable.bigfut1),
+                contentDescription = "App Icon",
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(32.dp)
+                    .clip(MaterialTheme.shapes.medium)
+            )
         Text(text = "BigFut",
             style = MaterialTheme.typography.h4,
             color = Color.White)

@@ -11,10 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
 import com.derich.bigfoot.R
 import com.derich.bigfoot.ui.data.Contributions
 import com.derich.bigfoot.ui.data.ContributionsViewModel
@@ -70,7 +70,7 @@ fun ContributionCard(contribution: Contributions,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.bigfut1),
+            painter = rememberImagePainter("https://firebasestorage.googleapis.com/v0/b/bigfut-bc86a.appspot.com/o/profilepics%2FIMG_20180729_115034.jpg?alt=media&token=37b5420c-5caa-4a6b-9883-12639d2a5191"),
             contentDescription = stringResource(R.string.profile_image_description),
             Modifier
                 .clip(MaterialTheme.shapes.medium)
