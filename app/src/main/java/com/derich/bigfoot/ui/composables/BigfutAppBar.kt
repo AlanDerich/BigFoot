@@ -16,14 +16,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.derich.bigfoot.R
-import com.derich.bigfoot.ui.data.AuthViewModel
 
 @Composable
-fun BigFutAppBar(authVm: AuthViewModel
-                 ,modifier: Modifier = Modifier.fillMaxWidth()) {
-    Row(modifier = modifier.background(color = Color.Blue),
+fun BigFutAppBar(modifier: Modifier = Modifier) {
+    Row(modifier = modifier.background(color = Color.Blue).fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically) {
-        //check if user is signed in and set their profile image on top-bar
             Image(painter = painterResource(id = R.drawable.bigfut1),
                 contentDescription = "App Icon",
                 modifier = Modifier

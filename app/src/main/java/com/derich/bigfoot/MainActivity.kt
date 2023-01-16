@@ -13,6 +13,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.derich.bigfoot.ui.bottomnavigation.BottomNavigator
+import com.derich.bigfoot.ui.bottomnavigation.NavigationGraph
 import com.derich.bigfoot.ui.composables.BigFutAppBar
 import com.derich.bigfoot.ui.composables.HomeComposable
 import com.derich.bigfoot.ui.composables.PhoneLoginUI
@@ -38,25 +40,33 @@ class MainActivity : ComponentActivity() {
         mainActivity = this
         super.onCreate(savedInstanceState)
         setContent {
+            //viewmodel handling all actions on contributions
             val contributionsViewModel: ContributionsViewModel by viewModels()
+            //get data from firebase firestone
             val dataOrException = contributionsViewModel.data.value
+            //login viewmodel handling all login activities
             val authVm: AuthViewModel = viewModel()
 
             FirebaseApp.initializeApp(/*context=*/this)
-            val firebaseAppCheck = FirebaseAppCheck.getInstance()
-            firebaseAppCheck.installAppCheckProviderFactory(
-                DebugAppCheckProviderFactory.getInstance()
-            )
+//            val firebaseAppCheck = FirebaseAppCheck.getInstance()
+//            firebaseAppCheck.installAppCheckProviderFactory(
+//                DebugAppCheckProviderFactory.getInstance()
+//            )
             // Construct navigation graph here.
 //            PhoneLoginUI(popUpScreen = { HomeComposable() }, viewModel = authVm)
+            //navcontroller handling navigation fromk login to home screen
             val navController = rememberNavController()
+            //navcontroller for the bottom navigation
+            val bottomNavController = rememberNavController()
             BigFootTheme {
                 Scaffold(
                     topBar = {
-                        BigFutAppBar(authVm)
-                    }
+                        BigFutAppBar()
+                    },
+                    bottomBar = { BottomNavigator(bottomNavController) }
                 ) {
                         innerPadding ->
+                    NavigationGraph(navController = bottomNavController)
                     NavHost(
                         navController = navController,
                         startDestination = BigFootScreen.Login.name,
@@ -100,6 +110,7 @@ class MainActivity : ComponentActivity() {
 
 
 }
+
 @Preview
 @Composable
 fun MainPrev(){

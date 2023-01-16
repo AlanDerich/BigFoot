@@ -22,6 +22,7 @@ import com.derich.bigfoot.ui.data.DataOrException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+//this is the default home screen
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun HomeComposable(modifier: Modifier = Modifier.fillMaxSize(),
@@ -58,6 +59,7 @@ viewModel: ContributionsViewModel) {
         )
 
     }
+
 }
 
 @Composable
