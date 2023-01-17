@@ -54,8 +54,6 @@ class MainActivity : ComponentActivity() {
 //            )
             // Construct navigation graph here.
 //            PhoneLoginUI(popUpScreen = { HomeComposable() }, viewModel = authVm)
-            //navcontroller handling navigation fromk login to home screen
-            val navController = rememberNavController()
             //navcontroller for the bottom navigation
             val bottomNavController = rememberNavController()
             BigFootTheme {
@@ -66,35 +64,12 @@ class MainActivity : ComponentActivity() {
                     bottomBar = { BottomNavigator(bottomNavController) }
                 ) {
                         innerPadding ->
-                    NavigationGraph(navController = bottomNavController, dataOrException = dataOrException, contViewModel = contributionsViewModel)
-                    NavHost(
-                        navController = navController,
-                        startDestination = BigFootScreen.Login.name,
-                        modifier = Modifier.padding(innerPadding)
+                    NavigationGraph(navController = bottomNavController,
+                        dataOrException = dataOrException,
+                        contViewModel = contributionsViewModel,
+                        modifier = Modifier.padding(innerPadding),
+                        authVm = authVm
                     )
-                    {
-                        composable(route = BigFootScreen.Login.name) {
-                            PhoneLoginUI(
-                                navigateToHome = { navController.navigate(BigFootScreen.Home.name) },
-                                viewModel = authVm,
-                                {
-                                    navController.navigate(BigFootScreen.Login.name)
-                                }
-                            )
-                        }
-                        composable(route = BigFootScreen.Home.name) {
-                            HomeComposable(dataOrException = dataOrException, viewModel = contributionsViewModel)
-                        }
-                        composable(route = BigFootScreen.Loans.name) {
-
-                        }
-                        composable(route = BigFootScreen.Transactions.name) {
-
-                        }
-                        composable(route = BigFootScreen.Account.name) {
-
-                        }
-                    }
 
                 }
             }

@@ -1,12 +1,16 @@
 package com.derich.bigfoot.ui.bottomnavigation
 
+import android.widget.Toast
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
@@ -61,10 +65,20 @@ fun BottomNavigator(navController: NavController) {
 @Composable
 fun NavigationGraph(navController: NavHostController,
                     dataOrException: DataOrException<List<Contributions>, Exception>,
-                    contViewModel : ContributionsViewModel) {
+                    contViewModel : ContributionsViewModel,
+                    modifier: Modifier = Modifier,
+                    authVm: AuthViewModel) {
     NavHost(navController, startDestination = BottomNavItem.Home.screen_route) {
         composable(BottomNavItem.Home.screen_route) {
-            HomeComposable(dataOrException = dataOrException, viewModel = contViewModel)
+            if (authVm.user != null){
+                HomeComposable(dataOrException = dataOrException, viewModel = contViewModel)
+            }
+            else {
+                LaunchedEffect(key1 = "navigateToAccount") {
+                    navController.navigate(BottomNavItem.Account.screen_route)
+                }
+                Toast.makeText(LocalContext.current, "Please login to continue", Toast.LENGTH_SHORT).show()
+            }
         }
         composable(BottomNavItem.Loans.screen_route) {
             LoansComposable()
