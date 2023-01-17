@@ -16,10 +16,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.derich.bigfoot.R
-import com.derich.bigfoot.ui.composables.AccountsScreen
-import com.derich.bigfoot.ui.composables.LoansScreen
-import com.derich.bigfoot.ui.composables.TransactionsScreen
-import com.derich.bigfoot.ui.data.BigFootScreen
+import com.derich.bigfoot.ui.composables.*
+import com.derich.bigfoot.ui.data.*
 
 @Composable
 fun BottomNavigator(navController: NavController) {
@@ -61,19 +59,21 @@ fun BottomNavigator(navController: NavController) {
     }
 }
 @Composable
-fun NavigationGraph(navController: NavHostController, ) {
+fun NavigationGraph(navController: NavHostController,
+                    dataOrException: DataOrException<List<Contributions>, Exception>,
+                    contViewModel : ContributionsViewModel) {
     NavHost(navController, startDestination = BottomNavItem.Home.screen_route) {
         composable(BottomNavItem.Home.screen_route) {
-            BigFootScreen.Home
+            HomeComposable(dataOrException = dataOrException, viewModel = contViewModel)
         }
         composable(BottomNavItem.Loans.screen_route) {
-            LoansScreen()
+            LoansComposable()
         }
         composable(BottomNavItem.Transactions.screen_route) {
-            TransactionsScreen()
+            TransactionsComposable()
         }
         composable(BottomNavItem.Account.screen_route) {
-            AccountsScreen()
+            AccountsComposable()
         }
     }
 }

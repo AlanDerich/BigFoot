@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
                     bottomBar = { BottomNavigator(bottomNavController) }
                 ) {
                         innerPadding ->
-                    NavigationGraph(navController = bottomNavController)
+                    NavigationGraph(navController = bottomNavController, dataOrException = dataOrException, contViewModel = contributionsViewModel)
                     NavHost(
                         navController = navController,
                         startDestination = BigFootScreen.Login.name,
@@ -84,6 +84,15 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(route = BigFootScreen.Home.name) {
                             HomeComposable(dataOrException = dataOrException, viewModel = contributionsViewModel)
+                        }
+                        composable(route = BigFootScreen.Loans.name) {
+
+                        }
+                        composable(route = BigFootScreen.Transactions.name) {
+
+                        }
+                        composable(route = BigFootScreen.Account.name) {
+
                         }
                     }
 
