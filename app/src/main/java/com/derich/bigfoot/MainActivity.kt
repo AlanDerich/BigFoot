@@ -10,21 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.derich.bigfoot.ui.bottomnavigation.BottomNavigator
 import com.derich.bigfoot.ui.bottomnavigation.NavigationGraph
 import com.derich.bigfoot.ui.composables.BigFutAppBar
-import com.derich.bigfoot.ui.composables.HomeComposable
-import com.derich.bigfoot.ui.composables.PhoneLoginUI
 import com.derich.bigfoot.ui.data.AuthViewModel
-import com.derich.bigfoot.ui.data.BigFootScreen
 import com.derich.bigfoot.ui.data.ContributionsViewModel
 import com.derich.bigfoot.ui.theme.BigFootTheme
 import com.google.firebase.FirebaseApp
-import com.google.firebase.appcheck.FirebaseAppCheck
-import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,11 +1,56 @@
 package com.derich.bigfoot.ui.composables
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.derich.bigfoot.R
+import com.derich.bigfoot.ui.data.AuthViewModel
+import com.derich.bigfoot.ui.theme.BigFootTheme
 
 @Composable
-fun AccountsComposable(modifier: Modifier = Modifier) {
-    Text(text = "This is Accounts Screen", modifier = modifier.fillMaxSize())
+fun AccountsComposable(modifier: Modifier = Modifier, authViewModel: AuthViewModel, navigateToHome: () -> Unit) {
+    var loginState by remember { mutableStateOf(false) }
+    Column(verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxSize()) {
+        Image(painter = painterResource(id = R.drawable.bigfut1),
+            contentDescription = "App Icon",
+            modifier = Modifier
+                .padding(8.dp)
+                .size(72.dp)
+                .clip(MaterialTheme.shapes.medium)
+        )
+        Text(text = "Alan Derich",
+            style = MaterialTheme.typography.h3,
+            modifier = Modifier.padding(8.dp))
+        Text(text = authViewModel.user!!.phoneNumber!!,
+            style = MaterialTheme.typography.h2,
+            modifier = Modifier.padding(8.dp))
+        Button(onClick = {
+            authViewModel.logOut()
+            loginState = false
+
+        },
+                modifier = Modifier.padding(8.dp)) {
+            Text(text = "Log Out",
+                style = MaterialTheme.typography.button)
+        }
+    }
+}
+
+@Preview
+@Composable
+fun DefaultPreview(modifier: Modifier = Modifier) {
+    BigFootTheme {
+//        AccountsComposable(userProfile = userProfile.user)
+    }
 }

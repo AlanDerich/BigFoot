@@ -77,7 +77,6 @@ fun NavigationGraph(navController: NavHostController,
                 LaunchedEffect(key1 = "navigateToAccount") {
                     navController.navigate(BottomNavItem.Account.screen_route)
                 }
-                Toast.makeText(LocalContext.current, "Please login to continue", Toast.LENGTH_SHORT).show()
             }
         }
         composable(BottomNavItem.Loans.screen_route) {
@@ -86,8 +85,26 @@ fun NavigationGraph(navController: NavHostController,
         composable(BottomNavItem.Transactions.screen_route) {
             TransactionsComposable()
         }
+        composable(BottomNavItem.Login.screen_route) {
+            PhoneLoginUI(navigateToHome = {
+                navController.navigate(BottomNavItem.Home.screen_route)
+            }, viewModel = authVm,
+                {
+
+            })
+        }
         composable(BottomNavItem.Account.screen_route) {
-            AccountsComposable()
+            if (authVm.user != null){
+                AccountsComposable(authViewModel = authVm) {
+
+                }
+            }
+            else {
+                LaunchedEffect(key1 = "navigateToLogin") {
+                    navController.navigate(BottomNavItem.Login.screen_route)
+                }
+                Toast.makeText(LocalContext.current, "Please login to continue", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.derich.bigfoot.R
+import com.derich.bigfoot.ui.bottomnavigation.BottomNavItem
 import com.derich.bigfoot.ui.data.AuthViewModel
 import com.derich.bigfoot.ui.data.Response
 
@@ -32,7 +33,6 @@ fun PhoneLoginUI(
     // Sign up state
     val uiState by viewModel.signUpState
         .collectAsState(initial = Response.NotInitialized)
-
     // SMS code
     val code by viewModel.code.collectAsState(initial = "")
 
@@ -113,7 +113,10 @@ fun PhoneLoginUI(
             // You can navigate when the auth process is successful
             is Response.Success -> {
                 Log.d("Code", "The Sign in was successful")
-                navigateToHome()
+                LaunchedEffect(key1 = "navigateToHome") {
+                    navigateToHome()
+                    viewModel.logIn()
+                }
             }
 
         }
