@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.derich.bigfoot.R
-import com.derich.bigfoot.ui.bottomnavigation.BottomNavItem
 import com.derich.bigfoot.ui.data.AuthViewModel
 import com.derich.bigfoot.ui.data.Response
 
@@ -40,7 +39,7 @@ fun PhoneLoginUI(
     val phone by viewModel.number.collectAsState(initial = "")
 
     val focusManager = LocalFocusManager.current
-    if (viewModel.user != null) {
+    if (viewModel.authState.currentUser != null){
         LaunchedEffect(key1 = "navigateHome") {
             navigateToHome()
         }
@@ -115,13 +114,10 @@ fun PhoneLoginUI(
                 Log.d("Code", "The Sign in was successful")
                 LaunchedEffect(key1 = "navigateToHome") {
                     navigateToHome()
-                    viewModel.logIn()
                 }
             }
 
         }
     }
-
-
 
 }

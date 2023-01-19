@@ -1,5 +1,6 @@
 package com.derich.bigfoot.ui.bottomnavigation
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -21,7 +22,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.derich.bigfoot.R
 import com.derich.bigfoot.ui.composables.*
-import com.derich.bigfoot.ui.data.*
+import com.derich.bigfoot.ui.data.AuthViewModel
+import com.derich.bigfoot.ui.data.Contributions
+import com.derich.bigfoot.ui.data.ContributionsViewModel
+import com.derich.bigfoot.ui.data.DataOrException
 
 @Composable
 fun BottomNavigator(navController: NavController) {
@@ -70,7 +74,7 @@ fun NavigationGraph(navController: NavHostController,
                     authVm: AuthViewModel) {
     NavHost(navController, startDestination = BottomNavItem.Home.screen_route) {
         composable(BottomNavItem.Home.screen_route) {
-            if (authVm.user != null){
+            if (authVm.authState.currentUser != null){
                 HomeComposable(dataOrException = dataOrException, viewModel = contViewModel)
             }
             else {
@@ -90,21 +94,26 @@ fun NavigationGraph(navController: NavHostController,
                 navController.navigate(BottomNavItem.Home.screen_route)
             }, viewModel = authVm,
                 {
-
+                    authVm.resetAuthState()
             })
         }
         composable(BottomNavItem.Account.screen_route) {
-            if (authVm.user != null){
-                AccountsComposable(authViewModel = authVm) {
-
-                }
+            if (authVm.authState.currentUser != null){
+                AccountsComposable(authViewModel = authVm)
+                Log.e("Account Activity", "already loggedin")
             }
             else {
-                LaunchedEffect(key1 = "navigateToLogin") {
-                    navController.navigate(BottomNavItem.Login.screen_route)
-                }
+                NavigateToLogin(navController = navController)
                 Toast.makeText(LocalContext.current, "Please login to continue", Toast.LENGTH_SHORT).show()
+                Log.e("Account Activity", "NOT loggedin")
             }
         }
+    }
+}
+
+@Composable
+fun NavigateToLogin(navController: NavController) {
+    LaunchedEffect(key1 = "navigateToLogin") {
+        navController.navigate(BottomNavItem.Login.screen_route)
     }
 }

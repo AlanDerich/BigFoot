@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,8 +17,10 @@ import com.derich.bigfoot.ui.data.AuthViewModel
 import com.derich.bigfoot.ui.theme.BigFootTheme
 
 @Composable
-fun AccountsComposable(modifier: Modifier = Modifier, authViewModel: AuthViewModel, navigateToHome: () -> Unit) {
-    var loginState by remember { mutableStateOf(false) }
+fun AccountsComposable(
+    modifier: Modifier = Modifier,
+    authViewModel: AuthViewModel
+) {
     Column(verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()) {
@@ -32,12 +34,11 @@ fun AccountsComposable(modifier: Modifier = Modifier, authViewModel: AuthViewMod
         Text(text = "Alan Derich",
             style = MaterialTheme.typography.h3,
             modifier = Modifier.padding(8.dp))
-        Text(text = authViewModel.user!!.phoneNumber!!,
+        Text(text = authViewModel.authState.currentUser!!.phoneNumber!!,
             style = MaterialTheme.typography.h2,
             modifier = Modifier.padding(8.dp))
         Button(onClick = {
             authViewModel.logOut()
-            loginState = false
 
         },
                 modifier = Modifier.padding(8.dp)) {
