@@ -78,20 +78,30 @@ fun NavigationGraph(navController: NavHostController,
                 HomeComposable(dataOrException = dataOrException, viewModel = contViewModel)
             }
             else {
-                LaunchedEffect(key1 = "navigateToAccount") {
-                    navController.navigate(BottomNavItem.Account.screen_route)
-                }
+                NavigateToLogin(navController = navController)
             }
         }
         composable(BottomNavItem.Loans.screen_route) {
-            LoansComposable()
+            if (authVm.authState.currentUser != null){
+                LoansComposable()
+            }
+            else {
+                NavigateToLogin(navController = navController)
+            }
         }
         composable(BottomNavItem.Transactions.screen_route) {
             TransactionsComposable()
+            if (authVm.authState.currentUser != null){
+                TransactionsComposable()
+            }
+            else {
+                NavigateToLogin(navController = navController)
+            }
         }
         composable(BottomNavItem.Login.screen_route) {
             PhoneLoginUI(navigateToHome = {
                 navController.navigate(BottomNavItem.Home.screen_route)
+                navController.clearBackStack(0)
             }, viewModel = authVm,
                 {
                     authVm.resetAuthState()
@@ -99,7 +109,8 @@ fun NavigationGraph(navController: NavHostController,
         }
         composable(BottomNavItem.Account.screen_route) {
             if (authVm.authState.currentUser != null){
-                AccountsComposable(authViewModel = authVm)
+                AccountsComposable(authViewModel = authVm,
+                    navController = navController)
                 Log.e("Account Activity", "already loggedin")
             }
             else {
@@ -113,7 +124,11 @@ fun NavigationGraph(navController: NavHostController,
 
 @Composable
 fun NavigateToLogin(navController: NavController) {
+
     LaunchedEffect(key1 = "navigateToLogin") {
-        navController.navigate(BottomNavItem.Login.screen_route)
+        navController.navigate(BottomNavItem.Login.screen_route) {
+            launchSingleTop = true
+            popUpTo(0) { inclusive = true }
+        }
     }
 }

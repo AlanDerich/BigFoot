@@ -12,6 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.derich.bigfoot.R
 import com.derich.bigfoot.ui.data.AuthViewModel
 import com.derich.bigfoot.ui.theme.BigFootTheme
@@ -19,7 +20,8 @@ import com.derich.bigfoot.ui.theme.BigFootTheme
 @Composable
 fun AccountsComposable(
     modifier: Modifier = Modifier,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    navController: NavController
 ) {
     Column(verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -38,7 +40,7 @@ fun AccountsComposable(
             style = MaterialTheme.typography.h2,
             modifier = Modifier.padding(8.dp))
         Button(onClick = {
-            authViewModel.logOut()
+            authViewModel.logOut(navController)
 
         },
                 modifier = Modifier.padding(8.dp)) {

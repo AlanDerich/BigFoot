@@ -4,12 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +22,8 @@ fun EnterCodeUI(
     code: String,
     onCodeChange: (String) -> Unit,
     phone: String,
-    onGo: (KeyboardActionScope.() -> Unit)?
+    onGo: (KeyboardActionScope.() -> Unit)?,
+    onNext: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -57,13 +55,18 @@ fun EnterCodeUI(
             singleLine = true,
             label = { Text(text = stringResource(R.string.code)) },
             leadingIcon = {
-                Icon(Icons.Default.PlayArrow, contentDescription = "")
+                Icon(Icons.Default.AccountBox, contentDescription = "")
             },
             modifier = Modifier.fillMaxWidth(0.45f)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = stringResource(R.string.enter_digits_code))
+        Button(
+            onClick = onNext,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(text = stringResource(id = R.string.verify_button))
+        }
     }
 
 }
@@ -71,5 +74,5 @@ fun EnterCodeUI(
 @Preview
 @Composable
 fun Preview() {
-    EnterCodeUI(code = "1234", onCodeChange = {}, phone = "0712345678", onGo = {})
+    EnterCodeUI(code = "1234", onCodeChange = {}, phone = "0712345678", onGo = {}, onNext = {})
 }

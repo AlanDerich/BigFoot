@@ -1,5 +1,6 @@
 package com.derich.bigfoot.ui.composables
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
@@ -10,6 +11,8 @@ import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,14 +31,15 @@ fun EnterPhoneNumberUI(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = stringResource(R.string.verify_phone),
-            style = MaterialTheme.typography.h6
-        )
+        Image(painterResource(id = R.drawable.bigfut1),
+            contentDescription = "Bigfoot Icon",
+            modifier = Modifier.padding(8.dp)
+                .clip(MaterialTheme.shapes.small)
+                .size(104.dp))
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = stringResource(id = R.string.gif_momo_sign_up_message))
+        Text(text = stringResource(id = R.string.phone_number_text))
 
         Spacer(modifier = Modifier.height(20.dp))
         PhoneNumberTextField(
@@ -71,6 +75,7 @@ fun PhoneNumberTextField(
         leadingIcon = {
             Icon(Icons.Default.Phone, contentDescription = "")
         },
+        placeholder = { Text(text = "e.g +254712345678") }
 
         )
 }
