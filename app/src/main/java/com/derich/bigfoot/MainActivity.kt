@@ -13,9 +13,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.derich.bigfoot.ui.bottomnavigation.BottomNavigator
 import com.derich.bigfoot.ui.bottomnavigation.NavigationGraph
-import com.derich.bigfoot.ui.composables.BigFutAppBar
-import com.derich.bigfoot.ui.data.AuthViewModel
-import com.derich.bigfoot.ui.data.ContributionsViewModel
+import com.derich.bigfoot.ui.common.BigFutAppBar
+import com.derich.bigfoot.ui.screens.home.ContributionsViewModel
+import com.derich.bigfoot.ui.screens.login.AuthViewModel
+import com.derich.bigfoot.ui.screens.transactions.TransactionsViewModel
 import com.derich.bigfoot.ui.theme.BigFootTheme
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +36,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             //viewmodel handling all actions on contributions
             val contributionsViewModel: ContributionsViewModel by viewModels()
+            val transactionsViewModel: TransactionsViewModel by viewModels()
             //get data from firebase firestone
             val dataOrException = contributionsViewModel.data.value
             //login viewmodel handling all login activities
@@ -57,10 +59,12 @@ class MainActivity : ComponentActivity() {
                     bottomBar = { BottomNavigator(bottomNavController) }
                 ) {
                         innerPadding ->
-                    NavigationGraph(navController = bottomNavController,
+                    NavigationGraph(
+                        navController = bottomNavController,
                         dataOrException = dataOrException,
                         contViewModel = contributionsViewModel,
                         modifier = Modifier.padding(innerPadding),
+                        transactionsViewModel = transactionsViewModel,
                         authVm = authVm
                     )
 

@@ -1,5 +1,7 @@
 package com.derich.bigfoot.ui.data
 
+import com.derich.bigfoot.ui.screens.login.AuthService
+import com.derich.bigfoot.ui.screens.login.AuthServiceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

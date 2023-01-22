@@ -21,11 +21,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.derich.bigfoot.R
-import com.derich.bigfoot.ui.composables.*
-import com.derich.bigfoot.ui.data.AuthViewModel
-import com.derich.bigfoot.ui.data.Contributions
-import com.derich.bigfoot.ui.data.ContributionsViewModel
+import com.derich.bigfoot.ui.common.AccountsComposable
 import com.derich.bigfoot.ui.data.DataOrException
+import com.derich.bigfoot.ui.screens.home.Contributions
+import com.derich.bigfoot.ui.screens.home.ContributionsViewModel
+import com.derich.bigfoot.ui.screens.home.HomeComposable
+import com.derich.bigfoot.ui.screens.loans.LoansComposable
+import com.derich.bigfoot.ui.screens.login.AuthViewModel
+import com.derich.bigfoot.ui.screens.login.PhoneLoginUI
+import com.derich.bigfoot.ui.screens.transactions.TransactionsComposable
+import com.derich.bigfoot.ui.screens.transactions.TransactionsViewModel
 
 @Composable
 fun BottomNavigator(navController: NavController) {
@@ -67,15 +72,19 @@ fun BottomNavigator(navController: NavController) {
     }
 }
 @Composable
-fun NavigationGraph(navController: NavHostController,
-                    dataOrException: DataOrException<List<Contributions>, Exception>,
-                    contViewModel : ContributionsViewModel,
-                    modifier: Modifier = Modifier,
-                    authVm: AuthViewModel) {
-    NavHost(navController, startDestination = BottomNavItem.Home.screen_route) {
+fun NavigationGraph(
+    navController: NavHostController,
+    dataOrException: DataOrException<List<Contributions>, Exception>,
+    contViewModel: ContributionsViewModel,
+    modifier: Modifier,
+    transactionsViewModel: TransactionsViewModel,
+    authVm: AuthViewModel
+) {
+    NavHost(navController, startDestination = BottomNavItem.Home.screen_route, modifier = modifier) {
         composable(BottomNavItem.Home.screen_route) {
             if (authVm.authState.currentUser != null){
-                HomeComposable(dataOrException = dataOrException, viewModel = contViewModel)
+                HomeComposable(dataOrException = dataOrException,
+                    viewModel = contViewModel)
             }
             else {
                 NavigateToLogin(navController = navController)
@@ -90,9 +99,8 @@ fun NavigationGraph(navController: NavHostController,
             }
         }
         composable(BottomNavItem.Transactions.screen_route) {
-            TransactionsComposable()
             if (authVm.authState.currentUser != null){
-                TransactionsComposable()
+                TransactionsComposable(transactionsViewModel = transactionsViewModel)
             }
             else {
                 NavigateToLogin(navController = navController)

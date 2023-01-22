@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.data
+package com.derich.bigfoot.ui.screens.login
 
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider

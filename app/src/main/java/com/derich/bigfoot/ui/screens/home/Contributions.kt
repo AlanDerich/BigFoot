@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.data
+package com.derich.bigfoot.ui.screens.home
 
 data class Contributions(
     var Name: String? = null,

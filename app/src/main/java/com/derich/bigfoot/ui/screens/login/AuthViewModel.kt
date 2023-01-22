@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.data
+package com.derich.bigfoot.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

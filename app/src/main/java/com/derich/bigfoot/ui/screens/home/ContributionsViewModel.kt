@@ -1,17 +1,15 @@
-package com.derich.bigfoot.ui.data
+package com.derich.bigfoot.ui.screens.home
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.derich.bigfoot.ui.data.DataOrException
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ContributionsViewModel @Inject constructor(
-    private val repository: ContributionsHistoryRepository
-): ViewModel() {
+
+class ContributionsViewModel : ViewModel() {
+    private val repository: ContributionsHistoryRepository = ContributionsHistoryRepository()
     var loading = mutableStateOf(false)
     val data: MutableState<DataOrException<List<Contributions>, Exception>> = mutableStateOf(
         DataOrException(

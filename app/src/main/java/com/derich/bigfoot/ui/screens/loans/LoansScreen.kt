@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.composables
+package com.derich.bigfoot.ui.screens.loans
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text

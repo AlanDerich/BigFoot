@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.composables
+package com.derich.bigfoot.ui.screens.login
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -18,8 +18,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.derich.bigfoot.R
-import com.derich.bigfoot.ui.data.AuthViewModel
-import com.derich.bigfoot.ui.data.Response
 
 @Composable
 fun PhoneLoginUI(

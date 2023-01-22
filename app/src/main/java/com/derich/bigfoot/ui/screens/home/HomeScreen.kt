@@ -1,10 +1,9 @@
-package com.derich.bigfoot.ui.composables
+package com.derich.bigfoot.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,8 +15,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.derich.bigfoot.R
-import com.derich.bigfoot.ui.data.Contributions
-import com.derich.bigfoot.ui.data.ContributionsViewModel
+import com.derich.bigfoot.ui.common.CircularProgressBar
 import com.derich.bigfoot.ui.data.DataOrException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -25,18 +23,18 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 //this is the default home screen
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun HomeComposable(modifier: Modifier = Modifier.fillMaxSize(),
+fun HomeComposable(modifier: Modifier = Modifier,
                    dataOrException: DataOrException<List<Contributions>, Exception>,
-viewModel: ContributionsViewModel) {
+                   viewModel: ContributionsViewModel
+) {
     val contributions = dataOrException.data
     contributions?.let {
-        LazyColumn {
+        LazyColumn(modifier = modifier.fillMaxSize()) {
             items(
                 items = contributions
             ) { contribution ->
                 ContributionCard(contribution = contribution,
-                    modifier = modifier
-                    ,viewModel = viewModel)
+                    modifier = modifier)
             }
         }
     }
@@ -64,8 +62,8 @@ viewModel: ContributionsViewModel) {
 
 @Composable
 fun ContributionCard(contribution: Contributions,
-                     modifier: Modifier,
-                     viewModel: ContributionsViewModel) {
+                     modifier: Modifier
+) {
     Row(
         modifier = modifier.padding(8.dp),
         horizontalArrangement = Arrangement.Start,
@@ -92,13 +90,3 @@ fun ContributionCard(contribution: Contributions,
             Text(text = contribution.date!!)
         }
     }
-
-@ExperimentalCoroutinesApi
-@Composable
-fun CircularProgressBar(
-    isDisplayed: Boolean
-) {
-    if (isDisplayed) {
-        CircularProgressIndicator()
-    }
-}

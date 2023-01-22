@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.composables
+package com.derich.bigfoot.ui.screens.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

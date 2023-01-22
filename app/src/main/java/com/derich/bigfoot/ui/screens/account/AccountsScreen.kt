@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.composables
+package com.derich.bigfoot.ui.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.derich.bigfoot.R
-import com.derich.bigfoot.ui.data.AuthViewModel
+import com.derich.bigfoot.ui.screens.login.AuthViewModel
 import com.derich.bigfoot.ui.theme.BigFootTheme
 
 @Composable

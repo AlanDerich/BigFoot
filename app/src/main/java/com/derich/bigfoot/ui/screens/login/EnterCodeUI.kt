@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.composables
+package com.derich.bigfoot.ui.screens.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActionScope
@@ -46,7 +46,8 @@ fun EnterCodeUI(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = code, onValueChange = onCodeChange,
+            value = code,
+            onValueChange = onCodeChange,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Go
@@ -57,7 +58,8 @@ fun EnterCodeUI(
             leadingIcon = {
                 Icon(Icons.Default.AccountBox, contentDescription = "")
             },
-            modifier = Modifier.fillMaxWidth(0.45f)
+            modifier = Modifier.fillMaxWidth(0.45f),
+            isError = code.isEmpty()
         )
 
         Spacer(modifier = Modifier.height(16.dp))

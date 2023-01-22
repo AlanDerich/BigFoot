@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.data
+package com.derich.bigfoot.ui.screens.login
 
 sealed class Response {
     object NotInitialized : Response()

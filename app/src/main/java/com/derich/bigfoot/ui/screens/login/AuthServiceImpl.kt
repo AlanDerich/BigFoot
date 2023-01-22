@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.data
+package com.derich.bigfoot.ui.screens.login
 
 import android.util.Log
 import com.derich.bigfoot.MainActivity
@@ -35,7 +35,7 @@ class AuthServiceImpl @Inject constructor(
                 "onVerificationCompleted: Verification completed. ${context.getString(R.string .verification_complete)}"
             )
             signUpState.value =
-                Response.Loading(message = context.getString(R.string .verification_complete))
+                Response.Loading(message = context.getString(R.string.verification_complete))
             // Use obtained credential to sign in user
             signInWithAuthCredential(credential)
         }
@@ -44,14 +44,18 @@ class AuthServiceImpl @Inject constructor(
             when (exception) {
                 is FirebaseAuthInvalidCredentialsException -> {
                     signUpState.value =
-                        Response.Error(exception =
-                        Exception(context.getString(R.string .verification_failed_try_again)))
+                        Response.Error(
+                            exception =
+                            Exception(context.getString(R.string.verification_failed_try_again))
+                        )
 
                 }
                 is FirebaseTooManyRequestsException -> {
                     signUpState.value =
-                        Response.Error(exception =
-                        Exception(context.getString(R.string .quota_exceeded)))
+                        Response.Error(
+                            exception =
+                            Exception(context.getString(R.string.quota_exceeded))
+                        )
 
                 }
                 else -> {
@@ -67,8 +71,10 @@ class AuthServiceImpl @Inject constructor(
             super.onCodeSent(code, token)
             verificationOtp = code
             resentToken = token
-            signUpState.value = Response.Loading(message =
-            context.getString(R.string.code_sent))
+            signUpState.value = Response.Loading(
+                message =
+                context.getString(R.string.code_sent)
+            )
         }
 
     }

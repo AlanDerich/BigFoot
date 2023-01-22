@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.composables
+package com.derich.bigfoot.ui.screens.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -23,7 +23,8 @@ import com.derich.bigfoot.R
 fun EnterPhoneNumberUI(
     modifier: Modifier = Modifier
         .padding(vertical = 56.dp, horizontal = 24.dp),
-    onClick: () -> Unit, phone: String,
+    onClick: () -> Unit,
+    phone: String,
     onPhoneChange: (String) -> Unit,
     onDone: (KeyboardActionScope.() -> Unit)?
 ) {
@@ -75,7 +76,10 @@ fun PhoneNumberTextField(
         leadingIcon = {
             Icon(Icons.Default.Phone, contentDescription = "")
         },
-        placeholder = { Text(text = "e.g +254712345678") }
-
+        placeholder = { Text(text = "e.g +254712345678") },
+        isError = phone.isEmpty()
         )
+}
+fun validate(text: String) {
+
 }
