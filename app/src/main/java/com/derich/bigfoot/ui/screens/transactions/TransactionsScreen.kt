@@ -64,12 +64,16 @@ fun TransactionCard(transaction: Transactions,
                 .padding(8.dp)
                 .fillMaxWidth()) {
             Text(text = transaction.depositFor!!,
-                style = MaterialTheme.typography.h6)
+                style = MaterialTheme.typography.h6,
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp))
             Spacer(modifier = Modifier.padding(2.dp))
-            Text(text = "Date: ${ transaction.transactionDate!! }")
+            Text(text = "Date: ${ transaction.transactionDate!! }",
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp))
             Spacer(modifier = Modifier.padding(2.dp))
-            Text(text = "Amount: KSH ${ transaction.transactionAmount }")
+            Text(text = "Amount: KSH ${ transaction.transactionAmount }",
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp))
             Spacer(modifier = Modifier.padding(2.dp))
-            Text(text = transaction.transactionConfirmation!!)
+            Text(text = transaction.transactionConfirmation!!,
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp))
         }
 }

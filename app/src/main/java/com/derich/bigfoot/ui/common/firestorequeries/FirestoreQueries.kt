@@ -17,4 +17,8 @@ class FirestoreQueries {
     fun queryAllContributions() = FirebaseFirestore.getInstance()
         .collectionGroup("Totals")
         .orderBy("totalAmount", Query.Direction.DESCENDING)
+    //query all loans from DB
+    fun queryAllLoans() = FirebaseFirestore.getInstance()
+        .collectionGroup("allLoans")
+        .orderBy("dateLoaned", Query.Direction.DESCENDING)
 }

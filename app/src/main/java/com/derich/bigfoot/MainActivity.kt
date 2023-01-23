@@ -15,6 +15,7 @@ import com.derich.bigfoot.ui.bottomnavigation.BottomNavigator
 import com.derich.bigfoot.ui.bottomnavigation.NavigationGraph
 import com.derich.bigfoot.ui.common.BigFutAppBar
 import com.derich.bigfoot.ui.screens.home.ContributionsViewModel
+import com.derich.bigfoot.ui.screens.loans.LoansViewModel
 import com.derich.bigfoot.ui.screens.login.AuthViewModel
 import com.derich.bigfoot.ui.screens.transactions.TransactionsViewModel
 import com.derich.bigfoot.ui.theme.BigFootTheme
@@ -37,6 +38,7 @@ class MainActivity : ComponentActivity() {
             //viewmodel handling all actions on contributions
             val contributionsViewModel: ContributionsViewModel by viewModels()
             val transactionsViewModel: TransactionsViewModel by viewModels()
+            val loansVM: LoansViewModel by viewModels()
             //get data from firebase firestone
             val dataOrException = contributionsViewModel.data.value
             //login viewmodel handling all login activities
@@ -65,6 +67,7 @@ class MainActivity : ComponentActivity() {
                         contViewModel = contributionsViewModel,
                         modifier = Modifier.padding(innerPadding),
                         transactionsViewModel = transactionsViewModel,
+                        loansVM = loansVM,
                         authVm = authVm
                     )
 

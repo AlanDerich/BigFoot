@@ -27,6 +27,7 @@ import com.derich.bigfoot.ui.screens.home.Contributions
 import com.derich.bigfoot.ui.screens.home.ContributionsViewModel
 import com.derich.bigfoot.ui.screens.home.HomeComposable
 import com.derich.bigfoot.ui.screens.loans.LoansComposable
+import com.derich.bigfoot.ui.screens.loans.LoansViewModel
 import com.derich.bigfoot.ui.screens.login.AuthViewModel
 import com.derich.bigfoot.ui.screens.login.PhoneLoginUI
 import com.derich.bigfoot.ui.screens.transactions.TransactionsComposable
@@ -78,7 +79,8 @@ fun NavigationGraph(
     contViewModel: ContributionsViewModel,
     modifier: Modifier,
     transactionsViewModel: TransactionsViewModel,
-    authVm: AuthViewModel
+    authVm: AuthViewModel,
+    loansVM: LoansViewModel
 ) {
     NavHost(navController, startDestination = BottomNavItem.Home.screen_route, modifier = modifier) {
         composable(BottomNavItem.Home.screen_route) {
@@ -92,7 +94,7 @@ fun NavigationGraph(
         }
         composable(BottomNavItem.Loans.screen_route) {
             if (authVm.authState.currentUser != null){
-                LoansComposable()
+                LoansComposable(loansViewModel = loansVM)
             }
             else {
                 NavigateToLogin(navController = navController)
