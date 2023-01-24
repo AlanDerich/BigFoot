@@ -7,7 +7,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,9 +22,10 @@ fun EnterCodeUI(
     code: String,
     onCodeChange: (String) -> Unit,
     phone: String,
-    onGo: (KeyboardActionScope.() -> Unit)?,
+    onGo: (KeyboardActionScope.() -> Unit),
     onNext: () -> Unit
 ) {
+    var isError by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,7 +45,13 @@ fun EnterCodeUI(
             text = "Waiting to automatically detect an SMS sent to $phone"
         )
         Spacer(modifier = Modifier.height(16.dp))
-
+        if (isError) {
+            Text(
+                text = "Code Cannot be empty",
+                color = MaterialTheme.colors.error,
+                style = MaterialTheme.typography.caption,
+                modifier = Modifier.padding(start = 16.dp, top = 0.dp))
+        }
         OutlinedTextField(
             value = code,
             onValueChange = onCodeChange,
@@ -52,19 +59,33 @@ fun EnterCodeUI(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Go
             ),
-            keyboardActions = KeyboardActions(onGo = onGo),
+            keyboardActions = KeyboardActions(onGo = {
+                if (code.isEmpty()){
+                    isError= true
+                }
+                else{
+                    onGo()
+                }
+            }),
             singleLine = true,
             label = { Text(text = stringResource(R.string.code)) },
             leadingIcon = {
                 Icon(Icons.Default.AccountBox, contentDescription = "")
             },
             modifier = Modifier.fillMaxWidth(0.45f),
-            isError = code.isEmpty()
+            isError = isError
         )
 
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = onNext,
+            onClick = {
+                      if (code.isEmpty()){
+                          isError = true
+                      }
+                else{
+                          onNext()
+                      }
+            },
             modifier = Modifier.padding(16.dp)
         ) {
             Text(text = stringResource(id = R.string.verify_button))

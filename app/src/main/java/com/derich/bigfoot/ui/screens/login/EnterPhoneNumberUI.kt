@@ -8,7 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,15 +26,17 @@ fun EnterPhoneNumberUI(
     onClick: () -> Unit,
     phone: String,
     onPhoneChange: (String) -> Unit,
-    onDone: (KeyboardActionScope.() -> Unit)?
+    onDone: (KeyboardActionScope.() -> Unit)
 ) {
+    var isError by remember { mutableStateOf(false) }
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(painterResource(id = R.drawable.bigfut1),
             contentDescription = "Bigfoot Icon",
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier
+                .padding(8.dp)
                 .clip(MaterialTheme.shapes.small)
                 .size(104.dp))
 
@@ -46,10 +48,18 @@ fun EnterPhoneNumberUI(
         PhoneNumberTextField(
             phone = phone,
             onNumberChange = onPhoneChange,
-            onDone = onDone
+            onDone = onDone,
+            isError = isError
         )
         Button(
-            onClick,
+            onClick = {
+                      if (phone.isEmpty()){
+                          isError = true
+                      }
+                else{
+                          onClick()
+                      }
+            },
             modifier = Modifier.padding(16.dp)
         ) {
             Text(text = stringResource(id = R.string.next))
@@ -63,21 +73,35 @@ fun EnterPhoneNumberUI(
 fun PhoneNumberTextField(
     phone: String,
     onNumberChange: (String) -> Unit,
-    onDone: (KeyboardActionScope.() -> Unit)?
+    onDone: (KeyboardActionScope.() -> Unit),
+    isError: Boolean
 ) {
+    if (isError) {
+        Text(
+            text = "Phone Cannot be empty",
+            color = MaterialTheme.colors.error,
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier.padding(start = 16.dp, top = 0.dp)
+        )
+    }
     OutlinedTextField(
-        value = phone, onValueChange = onNumberChange,
+        value = phone,
+        onValueChange = onNumberChange,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Phone,
             imeAction = ImeAction.Done
         ),
-        keyboardActions = KeyboardActions(onDone = onDone),
+        keyboardActions = KeyboardActions(onDone = {
+            if (phone.isNotEmpty()){
+                onDone()
+            }
+        }),
         singleLine = true,
         leadingIcon = {
             Icon(Icons.Default.Phone, contentDescription = "")
         },
         placeholder = { Text(text = "e.g +254712345678") },
-        isError = phone.isEmpty()
+        isError = isError
         )
 }
 fun validate(text: String) {

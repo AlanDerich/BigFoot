@@ -1,5 +1,6 @@
 package com.derich.bigfoot.ui.screens.loans
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.derich.bigfoot.ui.common.CircularProgressBar
 
@@ -37,6 +39,7 @@ fun LoansComposable(modifier: Modifier = Modifier, loansViewModel: LoansViewMode
         Text(text = e.message!!,
             modifier = modifier.padding(16.dp)
         )
+        Log.e("LoansScreen", "error $e")
     }
 
     Column(
@@ -74,16 +77,19 @@ fun LoansCard(loan: Loan,
             modifier = Modifier.padding(start = 8.dp, end = 8.dp))
         Spacer(modifier = Modifier.padding(2.dp))
         if (loan.status){
-            Text(text = "Repaid",
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp))
+            Text(text = "Status: Repaid",
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                    fontWeight = FontWeight.Bold
+            )
             Text(text = "Repaid Date: ${loan.dateRepaid}",
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp))
             Text(text = "Repaid Amount: ${loan.amountRepaid}",
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp))
         }
         else {
-            Text(text = "Not Paid",
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp))
+            Text(text = "Status: Not Paid",
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                fontWeight = FontWeight.Bold)
         }
     }
 }

@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.derich.bigfoot.ui.common.CircularProgressBar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -74,6 +75,8 @@ fun TransactionCard(transaction: Transactions,
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp))
             Spacer(modifier = Modifier.padding(2.dp))
             Text(text = transaction.transactionConfirmation!!,
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp))
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                maxLines = 4,
+                overflow = TextOverflow.Ellipsis)
         }
 }

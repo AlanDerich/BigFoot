@@ -21,7 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.derich.bigfoot.R
-import com.derich.bigfoot.ui.common.AccountsComposable
+import com.derich.bigfoot.ui.screens.account.AccountsComposable
 import com.derich.bigfoot.ui.data.DataOrException
 import com.derich.bigfoot.ui.screens.home.Contributions
 import com.derich.bigfoot.ui.screens.home.ContributionsViewModel

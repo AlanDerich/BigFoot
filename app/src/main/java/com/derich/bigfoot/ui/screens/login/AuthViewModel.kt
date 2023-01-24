@@ -54,6 +54,7 @@ constructor(private val accountService: AuthService,
             accountService.onVerifyOtp(code)
         }
     }
+    fun uploadImageToDb() {}
 
 
 }
