@@ -14,12 +14,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.derich.bigfoot.ui.common.CircularProgressBar
+import com.derich.bigfoot.ui.screens.home.MemberDetails
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun TransactionsComposable(modifier: Modifier = Modifier,
-                           transactionsViewModel: TransactionsViewModel) {
+                           transactionsViewModel: TransactionsViewModel,
+                           memberInfo: MemberDetails) {
 
     //get data from firebase firestone
     val dataOrException = transactionsViewModel.data.value

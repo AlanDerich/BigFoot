@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.derich.bigfoot.ui.bottomnavigation.BottomNavigator
 import com.derich.bigfoot.ui.bottomnavigation.NavigationGraph
 import com.derich.bigfoot.ui.common.BigFutAppBar
+import com.derich.bigfoot.ui.screens.account.AccountsViewModel
 import com.derich.bigfoot.ui.screens.home.ContributionsViewModel
 import com.derich.bigfoot.ui.screens.loans.LoansViewModel
 import com.derich.bigfoot.ui.screens.login.AuthViewModel
@@ -36,13 +37,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             //viewmodel handling all actions on contributions
-            val contributionsViewModel: ContributionsViewModel by viewModels()
-            val transactionsViewModel: TransactionsViewModel by viewModels()
+            val contributionsVM: ContributionsViewModel by viewModels()
+            val transactionsVM: TransactionsViewModel by viewModels()
             val loansVM: LoansViewModel by viewModels()
-            //get data from firebase firestone
-            val dataOrException = contributionsViewModel.data.value
+            val accountVM: AccountsViewModel by viewModels()
             //login viewmodel handling all login activities
-            val authVm: AuthViewModel = viewModel()
+            val authVM: AuthViewModel = viewModel()
 
             FirebaseApp.initializeApp(/*context=*/this)
 //            val firebaseAppCheck = FirebaseAppCheck.getInstance()
@@ -63,12 +63,12 @@ class MainActivity : ComponentActivity() {
                         innerPadding ->
                     NavigationGraph(
                         navController = bottomNavController,
-                        dataOrException = dataOrException,
-                        contViewModel = contributionsViewModel,
+                        contViewModel = contributionsVM,
                         modifier = Modifier.padding(innerPadding),
-                        transactionsViewModel = transactionsViewModel,
+                        transactionsViewModel = transactionsVM,
+                        accountViewModel = accountVM,
                         loansVM = loansVM,
-                        authVm = authVm
+                        authVm = authVM
                     )
 
                 }

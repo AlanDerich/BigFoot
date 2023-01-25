@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.derich.bigfoot.R
 import com.derich.bigfoot.ui.common.CircularProgressBar
-import com.derich.bigfoot.ui.data.DataOrException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -24,10 +23,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun HomeComposable(modifier: Modifier = Modifier,
-                   dataOrException: DataOrException<List<Contributions>, Exception>,
                    viewModel: ContributionsViewModel
 ) {
-    val contributions = dataOrException.data
+    val dataResponse = viewModel.data.value
+    val contributions = dataResponse.data
+//    val contributions = dataOrException.data
     contributions?.let {
         LazyColumn(modifier = modifier.fillMaxSize()) {
             items(
@@ -39,7 +39,7 @@ fun HomeComposable(modifier: Modifier = Modifier,
         }
     }
 
-    val e = dataOrException.e
+    val e = dataResponse.e
     e?.let {
         Text(
             text = e.message!!,
@@ -81,8 +81,8 @@ fun ContributionCard(contribution: Contributions,
 }
 
     @Composable
-    fun UsersColumn(modifier: Modifier = Modifier.padding(8.dp), contribution: Contributions) {
-        Column(horizontalAlignment = Alignment.Start, modifier = modifier) {
+    fun UsersColumn(modifier: Modifier = Modifier, contribution: Contributions) {
+        Column(horizontalAlignment = Alignment.Start, modifier = modifier.padding(8.dp)) {
             Text(text = contribution.Name!!, fontWeight = Bold)
             Spacer(modifier = Modifier.padding(2.dp))
             Text(text = "KSH ${contribution.totalAmount!!}")

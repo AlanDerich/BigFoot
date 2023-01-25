@@ -5,8 +5,8 @@ import com.derich.bigfoot.R
 sealed class BottomNavItem(var title:String, var icon:Int, var screen_route:String){
 
     object Home : BottomNavItem("Home", R.drawable.ic_home,"home")
-    object Loans: BottomNavItem("Loans",R.drawable.ic_loans,"loans")
     object Transactions: BottomNavItem("Transactions",R.drawable.ic_transactions,"transactions")
+    object Loans: BottomNavItem("Loans",R.drawable.ic_loans,"loans")
     object Account: BottomNavItem("Account",R.drawable.ic_account,"account")
     object Login: BottomNavItem("Login",R.drawable.ic_account,"login")
 }
