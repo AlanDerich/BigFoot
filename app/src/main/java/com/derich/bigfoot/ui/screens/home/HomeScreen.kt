@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.derich.bigfoot.R
 import com.derich.bigfoot.ui.common.CircularProgressBar
-import com.derich.bigfoot.ui.data.DataOrException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -24,39 +23,47 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun HomeComposable(modifier: Modifier = Modifier,
-                   dataOrException: DataOrException<List<Contributions>, Exception>,
-                   viewModel: ContributionsViewModel
+                   viewModel: ContributionsViewModel,
+                   memberInfo: MemberDetails?
 ) {
-    val contributions = dataOrException.data
-    contributions?.let {
-        LazyColumn(modifier = modifier.fillMaxSize()) {
-            items(
-                items = contributions
-            ) { contribution ->
-                ContributionCard(contribution = contribution,
-                    modifier = modifier)
+    val contributions = viewModel.data.value.data
+    if(memberInfo != null){
+        Text(text = "Welcome ${ memberInfo.firstName }")
+        Spacer(modifier = modifier.padding(8.dp))
+        contributions?.let {
+            LazyColumn(modifier = modifier.fillMaxSize()) {
+                items(
+                    items = contributions
+                ) { contribution ->
+                    ContributionCard(contribution = contribution,
+                        modifier = modifier)
+                }
             }
         }
+
+        val e = viewModel.data.value.e
+        e?.let {
+            Text(
+                text = e.message!!,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressBar(
+                isDisplayed = viewModel.loadingContributions.value
+            )
+
+        }
+    }
+    else {
+        Text(text = "Oops. Your details we're not found in our database")
     }
 
-    val e = dataOrException.e
-    e?.let {
-        Text(
-            text = e.message!!,
-            modifier = Modifier.padding(16.dp)
-        )
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        CircularProgressBar(
-            isDisplayed = viewModel.loading.value
-        )
-
-    }
 
 }
 

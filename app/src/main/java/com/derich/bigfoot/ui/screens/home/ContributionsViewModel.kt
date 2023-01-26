@@ -9,9 +9,16 @@ import kotlinx.coroutines.launch
 
 
 class ContributionsViewModel : ViewModel() {
-    private val repository: ContributionsHistoryRepository = ContributionsHistoryRepository()
-    var loading = mutableStateOf(false)
+    private val contributionsRepository: ContributionsHistoryRepository = ContributionsHistoryRepository()
+    var loadingContributions = mutableStateOf(false)
+    private var loadingMemberDetails = mutableStateOf(false)
     val data: MutableState<DataOrException<List<Contributions>, Exception>> = mutableStateOf(
+        DataOrException(
+            listOf(),
+            Exception("")
+        )
+    )
+    val memberData: MutableState<DataOrException<List<MemberDetails>, Exception>> = mutableStateOf(
         DataOrException(
             listOf(),
             Exception("")
@@ -20,13 +27,22 @@ class ContributionsViewModel : ViewModel() {
 
     init {
         getContributions()
+        getMemberDetails()
+    }
+
+    private fun getMemberDetails() {
+        viewModelScope.launch {
+            loadingMemberDetails.value = true
+            memberData.value = contributionsRepository.getMemberDetailsFromFirestore()
+            loadingMemberDetails.value = false
+        }
     }
 
     private fun getContributions() {
         viewModelScope.launch {
-            loading.value = true
-            data.value = repository.getContributionsFromFirestone()
-            loading.value = false
+            loadingContributions.value = true
+            data.value = contributionsRepository.getContributionsFromFirestone()
+            loadingContributions.value = false
         }
     }
 }

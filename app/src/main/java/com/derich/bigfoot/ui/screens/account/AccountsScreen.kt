@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.derich.bigfoot.ui.screens.home.MemberDetails
 import com.derich.bigfoot.ui.screens.login.AuthViewModel
 import com.derich.bigfoot.ui.theme.BigFootTheme
 
@@ -20,7 +21,8 @@ import com.derich.bigfoot.ui.theme.BigFootTheme
 fun AccountsComposable(
     modifier: Modifier = Modifier,
     authViewModel: AuthViewModel,
-    navController: NavController
+    navController: NavController,
+    memberInfo: MemberDetails
 ) {
     Column(verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -29,7 +31,9 @@ fun AccountsComposable(
             Badge {  IconButton(content = { Icon(
                 imageVector = Icons.Default.Edit,
                 contentDescription = "Edit",
-                modifier = modifier.size(16.dp).clip(MaterialTheme.shapes.medium))
+                modifier = modifier
+                    .size(16.dp)
+                    .clip(MaterialTheme.shapes.medium))
             },
             onClick = {}) } }) {
             Image(painter = painterResource(id = com.derich.bigfoot.R.drawable.bigfut1),
@@ -41,10 +45,10 @@ fun AccountsComposable(
 
         }
 
-        Text(text = "Alan Derich",
-            style = MaterialTheme.typography.h3,
+        Text(text = " ${ memberInfo.firstName +" "+ memberInfo.secondName +" "+ memberInfo.surname} ",
+            style = MaterialTheme.typography.h5,
             modifier = Modifier.padding(8.dp))
-        Text(text = authViewModel.authState.currentUser!!.phoneNumber!!,
+        Text(text = memberInfo.phoneNumber,
             style = MaterialTheme.typography.h2,
             modifier = Modifier.padding(8.dp))
         Button(onClick = {

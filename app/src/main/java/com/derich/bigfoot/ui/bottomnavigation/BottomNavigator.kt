@@ -22,10 +22,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.derich.bigfoot.R
 import com.derich.bigfoot.ui.screens.account.AccountsComposable
-import com.derich.bigfoot.ui.data.DataOrException
-import com.derich.bigfoot.ui.screens.home.Contributions
 import com.derich.bigfoot.ui.screens.home.ContributionsViewModel
 import com.derich.bigfoot.ui.screens.home.HomeComposable
+import com.derich.bigfoot.ui.screens.home.MemberDetails
 import com.derich.bigfoot.ui.screens.loans.LoansComposable
 import com.derich.bigfoot.ui.screens.loans.LoansViewModel
 import com.derich.bigfoot.ui.screens.login.AuthViewModel
@@ -75,61 +74,96 @@ fun BottomNavigator(navController: NavController) {
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
-    dataOrException: DataOrException<List<Contributions>, Exception>,
     contViewModel: ContributionsViewModel,
     modifier: Modifier,
     transactionsViewModel: TransactionsViewModel,
     authVm: AuthViewModel,
     loansVM: LoansViewModel
 ) {
-    NavHost(navController, startDestination = BottomNavItem.Home.screen_route, modifier = modifier) {
-        composable(BottomNavItem.Home.screen_route) {
-            if (authVm.authState.currentUser != null){
-                HomeComposable(dataOrException = dataOrException,
-                    viewModel = contViewModel)
+    val memberInfo: List<MemberDetails>? = contViewModel.memberData.value.data
+    var memberDetails: MemberDetails
+    if (memberInfo != null){
+    if (memberInfo.isNotEmpty()){
+        memberDetails= memberInfo[0]
+        NavHost(navController, startDestination = BottomNavItem.Home.screen_route, modifier = modifier) {
+            composable(BottomNavItem.Home.screen_route) {
+                if (authVm.authState.currentUser != null){
+                    HomeComposable(viewModel = contViewModel, memberInfo = memberDetails)
+                }
+                else {
+                    NavigateToLogin(navController = navController)
+                }
             }
-            else {
-                NavigateToLogin(navController = navController)
+
+            composable(BottomNavItem.Transactions.screen_route) {
+                if (authVm.authState.currentUser != null){
+                    TransactionsComposable(transactionsViewModel = transactionsViewModel,
+                        memberInfo = memberDetails)
+                }
+                else {
+                    NavigateToLogin(navController = navController)
+                }
             }
-        }
-        composable(BottomNavItem.Loans.screen_route) {
-            if (authVm.authState.currentUser != null){
-                LoansComposable(loansViewModel = loansVM)
+            composable(BottomNavItem.Loans.screen_route) {
+                if (authVm.authState.currentUser != null){
+                    LoansComposable(loansViewModel = loansVM,
+                        memberInfo = memberDetails)
+                }
+                else {
+                    NavigateToLogin(navController = navController)
+                }
             }
-            else {
-                NavigateToLogin(navController = navController)
+            composable(BottomNavItem.Login.screen_route) {
+                PhoneLoginUI(navigateToHome = {
+                    navController.navigate(BottomNavItem.Home.screen_route)
+                    navController.clearBackStack(0)
+                }, viewModel = authVm,
+                    {
+                        authVm.resetAuthState()
+                    })
             }
-        }
-        composable(BottomNavItem.Transactions.screen_route) {
-            if (authVm.authState.currentUser != null){
-                TransactionsComposable(transactionsViewModel = transactionsViewModel)
-            }
-            else {
-                NavigateToLogin(navController = navController)
-            }
-        }
-        composable(BottomNavItem.Login.screen_route) {
-            PhoneLoginUI(navigateToHome = {
-                navController.navigate(BottomNavItem.Home.screen_route)
-                navController.clearBackStack(0)
-            }, viewModel = authVm,
-                {
-                    authVm.resetAuthState()
-            })
-        }
-        composable(BottomNavItem.Account.screen_route) {
-            if (authVm.authState.currentUser != null){
-                AccountsComposable(authViewModel = authVm,
-                    navController = navController)
-                Log.e("Account Activity", "already loggedin")
-            }
-            else {
-                NavigateToLogin(navController = navController)
-                Toast.makeText(LocalContext.current, "Please login to continue", Toast.LENGTH_SHORT).show()
-                Log.e("Account Activity", "NOT loggedin")
+            composable(BottomNavItem.Account.screen_route) {
+                if (authVm.authState.currentUser != null){
+                    AccountsComposable(authViewModel = authVm,
+                        navController = navController,
+                        memberInfo = memberDetails)
+                    Log.e("Account Activity", "already loggedin")
+                }
+                else {
+                    NavigateToLogin(navController = navController)
+                    Toast.makeText(LocalContext.current, "Please login to continue", Toast.LENGTH_SHORT).show()
+                    Log.e("Account Activity", "NOT loggedin")
+                }
             }
         }
     }
+    else{
+        NavHost(navController, startDestination = BottomNavItem.Home.screen_route, modifier = modifier) {
+            composable(BottomNavItem.Home.screen_route) {
+                if (authVm.authState.currentUser != null){
+                    HomeComposable(viewModel = contViewModel, memberInfo = null)
+                }
+                else {
+                    NavigateToLogin(navController = navController)
+                }
+            }
+
+            composable(BottomNavItem.Login.screen_route) {
+                PhoneLoginUI(navigateToHome = {
+                    navController.navigate(BottomNavItem.Home.screen_route)
+                    navController.clearBackStack(0)
+                }, viewModel = authVm,
+                    {
+                        authVm.resetAuthState()
+                    })
+            }
+        }
+    }
+    }
+    else{
+        ErrorScreen(contViewModel.memberData.value.e.toString())
+    }
+
 }
 
 @Composable
@@ -141,4 +175,10 @@ fun NavigateToLogin(navController: NavController) {
             popUpTo(0) { inclusive = true }
         }
     }
+}
+
+@Composable
+fun ErrorScreen(e: String) {
+    Text(text = e)
+    Log.e("Home", e)
 }
