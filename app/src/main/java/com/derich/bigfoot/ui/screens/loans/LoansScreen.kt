@@ -1,6 +1,5 @@
 package com.derich.bigfoot.ui.screens.loans
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -39,7 +38,6 @@ fun LoansComposable(modifier: Modifier = Modifier, loansViewModel: LoansViewMode
         Text(text = e.message!!,
             modifier = modifier.padding(16.dp)
         )
-        Log.e("LoansScreen", "error $e")
     }
 
     Column(
@@ -79,8 +77,8 @@ fun LoansCard(loan: Loan,
         if (loan.status){
             Text(text = "Status: Repaid",
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-                    fontWeight = FontWeight.Bold
-            )
+                color = Color.Green,
+                fontWeight = FontWeight.Bold)
             Text(text = "Repaid Date: ${loan.dateRepaid}",
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp))
             Text(text = "Repaid Amount: ${loan.amountRepaid}",
@@ -89,6 +87,7 @@ fun LoansCard(loan: Loan,
         else {
             Text(text = "Status: Not Paid",
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                color = Color.Red,
                 fontWeight = FontWeight.Bold)
         }
     }

@@ -7,5 +7,5 @@ data class Loan(
     var status: Boolean = false,
     var transactionCharges: Int = 0,
     var dateRepaid: String? = null,
-    var amountRepaid: Int? = 0
+    var amountRepaid: Int? = null
 )

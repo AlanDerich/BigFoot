@@ -37,8 +37,8 @@ import com.derich.bigfoot.ui.screens.transactions.TransactionsViewModel
 fun BottomNavigator(navController: NavController) {
     val items = listOf(
         BottomNavItem.Home,
-        BottomNavItem.Loans,
         BottomNavItem.Transactions,
+        BottomNavItem.Loans,
         BottomNavItem.Account
     )
     BottomNavigation(
