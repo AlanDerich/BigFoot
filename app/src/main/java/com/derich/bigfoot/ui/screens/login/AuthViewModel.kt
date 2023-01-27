@@ -1,9 +1,10 @@
 package com.derich.bigfoot.ui.screens.login
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
-import com.derich.bigfoot.ui.bottomnavigation.BottomNavItem
+import com.derich.bigfoot.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,13 +28,10 @@ constructor(private val accountService: AuthService,
     fun authenticatePhone(phone: String) {
         accountService.authenticate(phone)
     }
-    fun logOut(navController: NavController) {
+    fun logOut(context: Context) {
         firebaseAuth.signOut()
         resetAuthState()
-            navController.navigate(BottomNavItem.Login.screen_route) {
-                launchSingleTop = true
-                popUpTo(0) { inclusive = true }
-            }
+        context.startActivity(Intent(context, LoginActivity::class.java))
 
     }
     fun resetAuthState() {

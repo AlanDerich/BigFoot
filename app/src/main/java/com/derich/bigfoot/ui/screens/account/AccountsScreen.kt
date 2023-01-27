@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ fun AccountsComposable(
     navController: NavController,
     memberInfo: MemberDetails
 ) {
+    val context = LocalContext.current
     Column(verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()) {
@@ -52,7 +54,7 @@ fun AccountsComposable(
             style = MaterialTheme.typography.h2,
             modifier = Modifier.padding(8.dp))
         Button(onClick = {
-            authViewModel.logOut(navController)
+            authViewModel.logOut(context = context)
 
         },
                 modifier = Modifier.padding(8.dp)) {

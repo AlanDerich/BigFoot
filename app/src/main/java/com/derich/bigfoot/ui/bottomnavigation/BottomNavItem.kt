@@ -8,5 +8,4 @@ sealed class BottomNavItem(var title:String, var icon:Int, var screen_route:Stri
     object Loans: BottomNavItem("Loans",R.drawable.ic_loans,"loans")
     object Transactions: BottomNavItem("Transactions",R.drawable.ic_transactions,"transactions")
     object Account: BottomNavItem("Account",R.drawable.ic_account,"account")
-    object Login: BottomNavItem("Login",R.drawable.ic_account,"login")
 }

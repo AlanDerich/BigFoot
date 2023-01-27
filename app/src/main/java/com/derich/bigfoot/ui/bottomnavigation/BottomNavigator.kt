@@ -1,13 +1,14 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.derich.bigfoot.ui.bottomnavigation
 
+import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,7 +21,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.derich.bigfoot.LoginActivity
 import com.derich.bigfoot.R
+import com.derich.bigfoot.ui.common.CircularProgressBar
 import com.derich.bigfoot.ui.screens.account.AccountsComposable
 import com.derich.bigfoot.ui.screens.home.ContributionsViewModel
 import com.derich.bigfoot.ui.screens.home.HomeComposable
@@ -28,9 +31,9 @@ import com.derich.bigfoot.ui.screens.home.MemberDetails
 import com.derich.bigfoot.ui.screens.loans.LoansComposable
 import com.derich.bigfoot.ui.screens.loans.LoansViewModel
 import com.derich.bigfoot.ui.screens.login.AuthViewModel
-import com.derich.bigfoot.ui.screens.login.PhoneLoginUI
 import com.derich.bigfoot.ui.screens.transactions.TransactionsComposable
 import com.derich.bigfoot.ui.screens.transactions.TransactionsViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
 fun BottomNavigator(navController: NavController) {
@@ -81,83 +84,35 @@ fun NavigationGraph(
     loansVM: LoansViewModel
 ) {
     val memberInfo: List<MemberDetails>? = contViewModel.memberData.value.data
-    var memberDetails: MemberDetails
+    val memberDetails: MemberDetails
     if (memberInfo != null){
     if (memberInfo.isNotEmpty()){
         memberDetails= memberInfo[0]
         NavHost(navController, startDestination = BottomNavItem.Home.screen_route, modifier = modifier) {
             composable(BottomNavItem.Home.screen_route) {
-                if (authVm.authState.currentUser != null){
-                    HomeComposable(viewModel = contViewModel, memberInfo = memberDetails)
-                }
-                else {
-                    NavigateToLogin(navController = navController)
-                }
+                HomeComposable(viewModel = contViewModel, memberInfo = memberDetails)
             }
 
             composable(BottomNavItem.Transactions.screen_route) {
-                if (authVm.authState.currentUser != null){
-                    TransactionsComposable(transactionsViewModel = transactionsViewModel,
+                TransactionsComposable(transactionsViewModel = transactionsViewModel,
                         memberInfo = memberDetails)
-                }
-                else {
-                    NavigateToLogin(navController = navController)
-                }
             }
             composable(BottomNavItem.Loans.screen_route) {
-                if (authVm.authState.currentUser != null){
                     LoansComposable(loansViewModel = loansVM,
                         memberInfo = memberDetails)
-                }
-                else {
-                    NavigateToLogin(navController = navController)
-                }
-            }
-            composable(BottomNavItem.Login.screen_route) {
-                PhoneLoginUI(navigateToHome = {
-                    navController.navigate(BottomNavItem.Home.screen_route)
-                    navController.clearBackStack(0)
-                }, viewModel = authVm,
-                    {
-                        authVm.resetAuthState()
-                    })
             }
             composable(BottomNavItem.Account.screen_route) {
-                if (authVm.authState.currentUser != null){
-                    AccountsComposable(authViewModel = authVm,
-                        navController = navController,
-                        memberInfo = memberDetails)
+                AccountsComposable(authViewModel = authVm,
+                    navController = navController,
+                    memberInfo = memberDetails)
                     Log.e("Account Activity", "already loggedin")
-                }
-                else {
-                    NavigateToLogin(navController = navController)
-                    Toast.makeText(LocalContext.current, "Please login to continue", Toast.LENGTH_SHORT).show()
-                    Log.e("Account Activity", "NOT loggedin")
-                }
             }
         }
     }
     else{
-        NavHost(navController, startDestination = BottomNavItem.Home.screen_route, modifier = modifier) {
-            composable(BottomNavItem.Home.screen_route) {
-                if (authVm.authState.currentUser != null){
-                    HomeComposable(viewModel = contViewModel, memberInfo = null)
-                }
-                else {
-                    NavigateToLogin(navController = navController)
-                }
-            }
-
-            composable(BottomNavItem.Login.screen_route) {
-                PhoneLoginUI(navigateToHome = {
-                    navController.navigate(BottomNavItem.Home.screen_route)
-                    navController.clearBackStack(0)
-                }, viewModel = authVm,
-                    {
-                        authVm.resetAuthState()
-                    })
-            }
-        }
+        CircularProgressBar(
+            isDisplayed = contViewModel.loadingMemberDetails.value
+        )
     }
     }
     else{
@@ -167,14 +122,9 @@ fun NavigationGraph(
 }
 
 @Composable
-fun NavigateToLogin(navController: NavController) {
-
-    LaunchedEffect(key1 = "navigateToLogin") {
-        navController.navigate(BottomNavItem.Login.screen_route) {
-            launchSingleTop = true
-            popUpTo(0) { inclusive = true }
-        }
-    }
+fun NavigateToLogin() {
+    val context = LocalContext.current
+    context.startActivity(Intent(context, LoginActivity::class.java))
 }
 
 @Composable

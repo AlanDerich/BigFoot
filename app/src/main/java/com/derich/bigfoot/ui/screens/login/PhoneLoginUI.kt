@@ -23,7 +23,8 @@ import com.derich.bigfoot.R
 fun PhoneLoginUI(
     navigateToHome: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel(),
-    restartLogin: () -> Unit
+    restartLogin: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 

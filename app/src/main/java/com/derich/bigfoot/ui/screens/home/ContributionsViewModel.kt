@@ -6,12 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.derich.bigfoot.ui.data.DataOrException
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class ContributionsViewModel : ViewModel() {
     private val contributionsRepository: ContributionsHistoryRepository = ContributionsHistoryRepository()
     var loadingContributions = mutableStateOf(false)
-    private var loadingMemberDetails = mutableStateOf(false)
+    var loadingMemberDetails = mutableStateOf(false)
     val data: MutableState<DataOrException<List<Contributions>, Exception>> = mutableStateOf(
         DataOrException(
             listOf(),
@@ -44,5 +47,14 @@ class ContributionsViewModel : ViewModel() {
             data.value = contributionsRepository.getContributionsFromFirestone()
             loadingContributions.value = false
         }
+    }
+    fun calculateContributionsDifference(totalAmount: Int) : Int {
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val currentDate = sdf.format(Date())
+        val currDate = sdf.parse(currentDate)
+        val startDate = sdf.parse("31/12/2019")
+        val diff: Long = currDate!!.time - startDate!!.time
+        val daysRemaining: Long = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
+        return ((daysRemaining.toInt() * 20) - totalAmount)
     }
 }
