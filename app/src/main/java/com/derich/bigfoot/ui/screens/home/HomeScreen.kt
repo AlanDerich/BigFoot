@@ -34,27 +34,28 @@ fun HomeComposable(modifier: Modifier = Modifier,
     val contributions = viewModel.data.value.data
     val context = LocalContext.current
     var displayMemberInfo by remember { mutableStateOf(false) }
-    var memberContributions: Contributions? = null
+    var memberContributions by remember { mutableStateOf(Contributions()) }
     if(memberInfo != null){
 //        val memberCont = contributions!!.contains("", )
         if (displayMemberInfo){
             Column {
                 Row {
                     val differenceInContributions = viewModel.calculateContributionsDifference(
-                        memberContributions?.totalAmount?.toInt() ?: 0
+                        memberContributions.totalAmount?.toInt() ?: 0
                     )
-                    if( differenceInContributions > 0){
+                    if( differenceInContributions < 0){
                         Icon(painter = painterResource(id = R.drawable.baseline_check_circle_24),
                             contentDescription = "Status of Contribution",
                             modifier = Modifier.size(68.dp))
-                        Text(text = "Hello ${memberInfo.firstName}, you\'re on ${memberContributions?.date}. Congrats! You are KSH $differenceInContributions")
+                        Text(text = "Hello ${memberInfo.firstName}, you\'re on ${memberContributions.date}. Congrats! You are KSH $differenceInContributions ahead on schedule")
                     }
                     else{
                         Icon(painter = painterResource(id = R.drawable.baseline_cancel_24),
                             contentDescription = "Status of Contribution",
                             modifier = Modifier.size(68.dp))
-                        Text(text = "Hello ${memberInfo.firstName}, you\'re on ${memberContributions?.date}. You need KSH $differenceInContributions to be back on track.")
+                        Text(text = "Hello ${memberInfo.firstName}, you\'re on ${memberContributions.date}. You need KSH $differenceInContributions to be back on track.")
                     }
+                    Spacer(modifier = Modifier.size(8.dp))
                 }
                 contributions?.let {
                     LazyColumn(modifier = modifier.fillMaxSize()) {
@@ -69,20 +70,13 @@ fun HomeComposable(modifier: Modifier = Modifier,
             }
         }
         else{
-                contributions?.let {
-                    LazyColumn(modifier = modifier.fillMaxSize()) {
-                        items(
-                            items = contributions
-                        ) { contribution ->
-                            ContributionCard(contribution = contribution,
-                                modifier = modifier)
-                            if (contribution.Name == (memberInfo.firstName + " " + memberInfo.secondName + " " + memberInfo.surname)){
-                                displayMemberInfo = true
-                                memberContributions = contribution
-                            }
-                        }
-                    }
+            contributions?.forEach {contribution ->
+                if (contribution.Name == (memberInfo.firstName + " " + memberInfo.secondName + " " + memberInfo.surname)){
+                    memberContributions = contribution
+                    displayMemberInfo = true
+
                 }
+            }
         }
 
 

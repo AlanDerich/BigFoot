@@ -49,7 +49,7 @@ class ContributionsViewModel : ViewModel() {
         }
     }
     fun calculateContributionsDifference(totalAmount: Int) : Int {
-        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.US)
         val currentDate = sdf.format(Date())
         val currDate = sdf.parse(currentDate)
         val startDate = sdf.parse("31/12/2019")
