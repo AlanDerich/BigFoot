@@ -38,7 +38,7 @@ fun HomeComposable(modifier: Modifier = Modifier,
     if(memberInfo != null){
 //        val memberCont = contributions!!.contains("", )
         if (displayMemberInfo){
-            Column {
+            Column(modifier = modifier.padding(8.dp)) {
                 Row {
                     val differenceInContributions = viewModel.calculateContributionsDifference(
                         memberContributions.totalAmount?.toInt() ?: 0
@@ -47,6 +47,7 @@ fun HomeComposable(modifier: Modifier = Modifier,
                         Icon(painter = painterResource(id = R.drawable.baseline_check_circle_24),
                             contentDescription = "Status of Contribution",
                             modifier = Modifier.size(68.dp))
+                        Spacer(modifier = Modifier.padding(2.dp))
                         Text(text = "Hello ${memberInfo.firstName}, you\'re on ${memberContributions.date}. Congrats! You are KSH $differenceInContributions ahead on schedule")
                     }
                     else{
@@ -58,7 +59,7 @@ fun HomeComposable(modifier: Modifier = Modifier,
                     Spacer(modifier = Modifier.size(8.dp))
                 }
                 contributions?.let {
-                    LazyColumn(modifier = modifier.fillMaxSize()) {
+                    LazyColumn(modifier = Modifier.padding(top= 8.dp)) {
                         items(
                             items = contributions
                         ) { contribution ->
@@ -90,7 +91,7 @@ fun HomeComposable(modifier: Modifier = Modifier,
         }
 
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -116,7 +117,7 @@ fun ContributionCard(contribution: Contributions,
                      modifier: Modifier
 ) {
     Row(
-        modifier = modifier.padding(8.dp),
+        modifier = modifier.padding(start = 8.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
