@@ -8,8 +8,7 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -33,6 +32,7 @@ import com.derich.bigfoot.ui.screens.loans.LoansViewModel
 import com.derich.bigfoot.ui.screens.login.AuthViewModel
 import com.derich.bigfoot.ui.screens.transactions.TransactionsComposable
 import com.derich.bigfoot.ui.screens.transactions.TransactionsViewModel
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
@@ -83,14 +83,15 @@ fun NavigationGraph(
     authVm: AuthViewModel,
     loansVM: LoansViewModel
 ) {
-    val memberInfo: List<MemberDetails>? = contViewModel.memberData.value.data
+    val allMemberInfo: List<MemberDetails>? = contViewModel.memberData.value.data
+//    var allMemberInfo by remember { mutableStateOf(List<MemberDetails>) }
     val memberDetails: MemberDetails
-    if (memberInfo != null){
-    if (memberInfo.isNotEmpty()){
-        memberDetails= memberInfo[0]
+    if (allMemberInfo != null){
+    if (allMemberInfo.isNotEmpty()){
+        memberDetails = getMemberData(allMemberInfo)!!
         NavHost(navController, startDestination = BottomNavItem.Home.screen_route, modifier = modifier) {
             composable(BottomNavItem.Home.screen_route) {
-                HomeComposable(viewModel = contViewModel, memberInfo = memberDetails)
+                HomeComposable(viewModel = contViewModel, specificMemberDetails = memberDetails, allMembersInfo = allMemberInfo)
             }
 
             composable(BottomNavItem.Transactions.screen_route) {
@@ -131,4 +132,13 @@ fun NavigateToLogin() {
 fun ErrorScreen(e: String) {
     Text(text = e)
     Log.e("Home", e)
+}
+
+fun getMemberData(memberInfo: List<MemberDetails>): MemberDetails? {
+    memberInfo.forEach {memberDetails ->
+        if (memberDetails.phoneNumber == FirebaseAuth.getInstance().currentUser!!.phoneNumber){
+            return memberDetails
+        }
+    }
+    return null
 }

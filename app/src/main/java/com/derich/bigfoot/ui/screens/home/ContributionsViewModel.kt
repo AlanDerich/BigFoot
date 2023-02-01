@@ -15,12 +15,6 @@ class ContributionsViewModel : ViewModel() {
     private val contributionsRepository: ContributionsHistoryRepository = ContributionsHistoryRepository()
     var loadingContributions = mutableStateOf(false)
     var loadingMemberDetails = mutableStateOf(false)
-    val data: MutableState<DataOrException<List<Contributions>, Exception>> = mutableStateOf(
-        DataOrException(
-            listOf(),
-            Exception("")
-        )
-    )
     val memberData: MutableState<DataOrException<List<MemberDetails>, Exception>> = mutableStateOf(
         DataOrException(
             listOf(),
@@ -29,7 +23,6 @@ class ContributionsViewModel : ViewModel() {
     )
 
     init {
-        getContributions()
         getMemberDetails()
     }
 
@@ -41,13 +34,6 @@ class ContributionsViewModel : ViewModel() {
         }
     }
 
-    private fun getContributions() {
-        viewModelScope.launch {
-            loadingContributions.value = true
-            data.value = contributionsRepository.getContributionsFromFirestone()
-            loadingContributions.value = false
-        }
-    }
     fun calculateContributionsDifference(totalAmount: Int) : Int {
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.US)
         val currentDate = sdf.format(Date())

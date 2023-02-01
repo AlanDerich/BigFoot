@@ -1,6 +1,7 @@
 package com.derich.bigfoot.ui.screens.home
 
 import android.app.Activity
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -29,39 +30,37 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun HomeComposable(modifier: Modifier = Modifier,
                    viewModel: ContributionsViewModel,
-                   memberInfo: MemberDetails?
+                   specificMemberDetails: MemberDetails?,
+                   allMembersInfo: List<MemberDetails>
 ) {
-    val contributions = viewModel.data.value.data
     val context = LocalContext.current
-    var displayMemberInfo by remember { mutableStateOf(false) }
-    var memberContributions by remember { mutableStateOf(Contributions()) }
-    if(memberInfo != null){
+    if(specificMemberDetails != null){
 //        val memberCont = contributions!!.contains("", )
-        if (displayMemberInfo){
+
             Column(modifier = modifier.padding(8.dp)) {
                 Row {
                     val differenceInContributions = viewModel.calculateContributionsDifference(
-                        memberContributions.totalAmount?.toInt() ?: 0
+                        specificMemberDetails.totalAmount.toInt()
                     )
                     if( differenceInContributions < 0){
                         Icon(painter = painterResource(id = R.drawable.baseline_check_circle_24),
                             contentDescription = "Status of Contribution",
                             modifier = Modifier.size(68.dp))
                         Spacer(modifier = Modifier.padding(2.dp))
-                        Text(text = "Hello ${memberInfo.firstName}, you\'re on ${memberContributions.date}. Congrats! You are KSH $differenceInContributions ahead on schedule")
+                        Text(text = "Hello ${specificMemberDetails.firstName}, you\'re on ${specificMemberDetails.contributionsDate}. Congrats! You are KSH $differenceInContributions ahead on schedule")
                     }
                     else{
                         Icon(painter = painterResource(id = R.drawable.baseline_cancel_24),
                             contentDescription = "Status of Contribution",
                             modifier = Modifier.size(68.dp))
-                        Text(text = "Hello ${memberInfo.firstName}, you\'re on ${memberContributions.date}. You need KSH $differenceInContributions to be back on track.")
+                        Text(text = "Hello ${specificMemberDetails.firstName}, you\'re on ${specificMemberDetails.contributionsDate}. You need KSH $differenceInContributions to be back on track.")
                     }
                     Spacer(modifier = Modifier.size(8.dp))
                 }
-                contributions?.let {
+                allMembersInfo.let {
                     LazyColumn(modifier = Modifier.padding(top= 8.dp)) {
                         items(
-                            items = contributions
+                            items = allMembersInfo
                         ) { contribution ->
                             ContributionCard(contribution = contribution,
                                 modifier = modifier)
@@ -69,25 +68,16 @@ fun HomeComposable(modifier: Modifier = Modifier,
                     }
                 }
             }
-        }
-        else{
-            contributions?.forEach {contribution ->
-                if (contribution.Name == (memberInfo.firstName + " " + memberInfo.secondName + " " + memberInfo.surname)){
-                    memberContributions = contribution
-                    displayMemberInfo = true
-
-                }
-            }
-        }
 
 
 
-        val e = viewModel.data.value.e
+        val e = viewModel.memberData.value.e
         e?.let {
             Text(
                 text = e.message!!,
                 modifier = Modifier.padding(16.dp)
             )
+            Log.e("homepage", "Error $e")
         }
 
         Column(
@@ -106,14 +96,14 @@ fun HomeComposable(modifier: Modifier = Modifier,
         }
     }
     else {
-        Text(text = "Oops. Your details we're not found in our database")
+        Text(text = "Oops. No details we're not found in our database. Please Contact Admin to make things right.")
     }
 
 
 }
 
 @Composable
-fun ContributionCard(contribution: Contributions,
+fun ContributionCard(contribution: MemberDetails,
                      modifier: Modifier
 ) {
     Row(
@@ -122,7 +112,7 @@ fun ContributionCard(contribution: Contributions,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = rememberAsyncImagePainter("https://firebasestorage.googleapis.com/v0/b/bigfut-bc86a.appspot.com/o/profilepics%2FIMG_20180729_115034.jpg?alt=media&token=37b5420c-5caa-4a6b-9883-12639d2a5191"),
+            painter = rememberAsyncImagePainter(contribution.profPicUrl),
             contentDescription = stringResource(R.string.profile_image_description),
             Modifier
                 .clip(MaterialTheme.shapes.medium)
@@ -133,12 +123,12 @@ fun ContributionCard(contribution: Contributions,
 }
 
 @Composable 
-fun UsersColumn(modifier: Modifier = Modifier, contribution: Contributions) {
+fun UsersColumn(modifier: Modifier = Modifier, contribution: MemberDetails) {
         Column(horizontalAlignment = Alignment.Start, modifier = modifier.padding(8.dp)) {
-            Text(text = contribution.Name!!, fontWeight = Bold)
+            Text(text = contribution.fullNames, fontWeight = Bold)
             Spacer(modifier = Modifier.padding(2.dp))
-            Text(text = "KSH ${contribution.totalAmount!!}")
+            Text(text = "KSH ${contribution.totalAmount}")
             Spacer(modifier = Modifier.padding(2.dp))
-            Text(text = contribution.date!!) 
+            Text(text = contribution.contributionsDate)
         } 
 }

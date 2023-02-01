@@ -14,18 +14,8 @@ class ContributionsHistoryRepository {
     private val getAllContributions : Query = firestoreQueries.queryAllContributions()
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     //get memberdetails from db
-    private val getMemberDetails : Query = firestoreQueries.queryMemberDetails(firebaseAuth.currentUser!!.phoneNumber!!)
-    suspend fun getContributionsFromFirestone(): DataOrException<List<Contributions>, Exception> {
-        val dataOrException = DataOrException<List<Contributions>, Exception>()
-        try {
-            dataOrException.data = getAllContributions.get().await().map { document ->
-                document.toObject(Contributions::class.java)
-            }
-        } catch (e: FirebaseFirestoreException) {
-            dataOrException.e = e
-        }
-        return dataOrException
-    }
+    private val getMemberDetails : Query = firestoreQueries.queryAllMemberDetails()
+
     suspend fun getMemberDetailsFromFirestore(): DataOrException<List<MemberDetails>, Exception> {
         val dataOrException = DataOrException<List<MemberDetails>, Exception>()
         try {

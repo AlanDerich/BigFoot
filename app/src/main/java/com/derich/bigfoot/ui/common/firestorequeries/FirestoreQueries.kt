@@ -26,4 +26,7 @@ class FirestoreQueries {
     fun queryMemberDetails(phoneNumber: String) = firebaseFirestore
         .collectionGroup("allMembers")
         .whereEqualTo("phoneNumber", phoneNumber)
+    fun queryAllMemberDetails() = firebaseFirestore
+        .collectionGroup("allMembers")
+        .orderBy("totalAmount", Query.Direction.DESCENDING)
 }
