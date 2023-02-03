@@ -2,7 +2,6 @@
 
 package com.derich.bigfoot.ui.bottomnavigation
 
-import android.content.Intent
 import android.util.Log
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -11,7 +10,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
@@ -20,9 +18,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.derich.bigfoot.LoginActivity
 import com.derich.bigfoot.R
-import com.derich.bigfoot.ui.common.CircularProgressBar
+import com.derich.bigfoot.ui.common.composables.CircularProgressBar
 import com.derich.bigfoot.ui.screens.account.AccountsComposable
 import com.derich.bigfoot.ui.screens.home.ContributionsViewModel
 import com.derich.bigfoot.ui.screens.home.HomeComposable
@@ -104,9 +101,7 @@ fun NavigationGraph(
             }
             composable(BottomNavItem.Account.screen_route) {
                 AccountsComposable(authViewModel = authVm,
-                    navController = navController,
                     memberInfo = memberDetails)
-                    Log.e("Account Activity", "already loggedin")
             }
         }
     }
@@ -123,22 +118,18 @@ fun NavigationGraph(
 }
 
 @Composable
-fun NavigateToLogin() {
-    val context = LocalContext.current
-    context.startActivity(Intent(context, LoginActivity::class.java))
-}
-
-@Composable
 fun ErrorScreen(e: String) {
     Text(text = e)
     Log.e("Home", e)
 }
 
 fun getMemberData(memberInfo: List<MemberDetails>): MemberDetails? {
+    var memberDets: MemberDetails? = null
     memberInfo.forEach {memberDetails ->
         if (memberDetails.phoneNumber == FirebaseAuth.getInstance().currentUser!!.phoneNumber){
+            memberDets = memberDetails
             return memberDetails
         }
     }
-    return null
+    return memberDets
 }

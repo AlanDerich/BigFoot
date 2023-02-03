@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.derich.bigfoot.ui.common.BigFutAppBar
+import com.derich.bigfoot.ui.common.composables.BigFutAppBar
 import com.derich.bigfoot.ui.screens.login.AuthViewModel
 import com.derich.bigfoot.ui.screens.login.PhoneLoginUI
 import com.derich.bigfoot.ui.theme.BigFootTheme
@@ -28,14 +28,13 @@ class LoginActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             authVM = viewModel()
-                BigFootTheme {
-                    Scaffold(
+            BigFootTheme {
+                Scaffold(
                         topBar = {
                             BigFutAppBar()
                         }
-                    ) {
-                            innerPadding ->
-                        PhoneLoginUI(
+                    ) { innerPadding ->
+                    PhoneLoginUI(
                             navigateToHome = {
                                 val intent = Intent(this, MainActivity::class.java)
                                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -44,7 +43,7 @@ class LoginActivity: ComponentActivity() {
                         restartLogin = {
                             authVM.resetAuthState()
                         },
-                            modifier = Modifier.padding(innerPadding))
+                        modifier = Modifier.padding(innerPadding))
 
                     }
                 }

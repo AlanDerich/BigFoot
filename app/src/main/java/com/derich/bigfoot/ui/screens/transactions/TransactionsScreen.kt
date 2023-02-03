@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.derich.bigfoot.ui.common.CircularProgressBar
+import com.derich.bigfoot.ui.common.composables.CircularProgressBar
 import com.derich.bigfoot.ui.screens.home.MemberDetails
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

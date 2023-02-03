@@ -21,8 +21,7 @@ import com.derich.bigfoot.R
 
 @Composable
 fun EnterPhoneNumberUI(
-    modifier: Modifier = Modifier
-        .padding(vertical = 56.dp, horizontal = 24.dp),
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     phone: String,
     onPhoneChange: (String) -> Unit,
@@ -30,7 +29,7 @@ fun EnterPhoneNumberUI(
 ) {
     var isError by remember { mutableStateOf(false) }
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize().padding(vertical = 56.dp, horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(painterResource(id = R.drawable.bigfut1),
@@ -103,7 +102,4 @@ fun PhoneNumberTextField(
         placeholder = { Text(text = "e.g +254712345678") },
         isError = isError
         )
-}
-fun validate(text: String) {
-
 }

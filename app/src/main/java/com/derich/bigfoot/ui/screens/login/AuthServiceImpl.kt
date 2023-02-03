@@ -90,7 +90,7 @@ class AuthServiceImpl @Inject constructor(
                 if (task.isSuccessful) {
                     Log.i(TAG, "signInWithAuthCredential:The sign in succeeded ")
                     signUpState.value =
-                        Response.Success(message = context.getString(R.string.phone_auth_success))
+                        Response.Success
                 } else {
 
 
@@ -109,10 +109,6 @@ class AuthServiceImpl @Inject constructor(
 
             }
 
-    }
-
-    fun getUserId(): String {
-        return auth.currentUser?.uid.orEmpty()
     }
 
     override fun authenticate(phone: String) {

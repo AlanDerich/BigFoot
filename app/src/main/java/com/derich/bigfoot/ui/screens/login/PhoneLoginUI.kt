@@ -116,6 +116,7 @@ fun PhoneLoginUI(
         // You can navigate when the auth process is successful
         is Response.Success -> {
             Log.d("Code", "The Sign in was successful")
+            viewModel.resetAuthState()
             LaunchedEffect(key1 = "navigateToHome") {
                 navigateToHome()
             }

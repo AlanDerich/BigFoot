@@ -14,7 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.derich.bigfoot.ui.bottomnavigation.BottomNavigator
 import com.derich.bigfoot.ui.bottomnavigation.NavigationGraph
-import com.derich.bigfoot.ui.common.BigFutAppBar
+import com.derich.bigfoot.ui.common.composables.BigFutAppBar
 import com.derich.bigfoot.ui.screens.home.ContributionsViewModel
 import com.derich.bigfoot.ui.screens.loans.LoansViewModel
 import com.derich.bigfoot.ui.screens.login.AuthViewModel

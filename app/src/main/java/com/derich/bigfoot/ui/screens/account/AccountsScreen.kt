@@ -13,7 +13,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.derich.bigfoot.ui.screens.home.MemberDetails
 import com.derich.bigfoot.ui.screens.login.AuthViewModel
 import com.derich.bigfoot.ui.theme.BigFootTheme
@@ -22,7 +21,6 @@ import com.derich.bigfoot.ui.theme.BigFootTheme
 fun AccountsComposable(
     modifier: Modifier = Modifier,
     authViewModel: AuthViewModel,
-    navController: NavController,
     memberInfo: MemberDetails
 ) {
     val context = LocalContext.current

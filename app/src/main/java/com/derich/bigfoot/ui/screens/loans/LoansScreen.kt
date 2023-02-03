@@ -13,24 +13,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.derich.bigfoot.ui.common.CircularProgressBar
+import com.derich.bigfoot.ui.common.composables.CircularProgressBar
 import com.derich.bigfoot.ui.screens.home.MemberDetails
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun LoansComposable(modifier: Modifier = Modifier, loansViewModel: LoansViewModel, memberInfo: MemberDetails?) {
+fun LoansComposable(modifier: Modifier = Modifier,
+                    loansViewModel: LoansViewModel,
+                    memberInfo: MemberDetails?) {
     //this screen contains details on loans history
 //get data from firebase firestone
     val dataOrException = loansViewModel.data.value
-
+    var totalOutstandingLoanAmount = 0
+    var totalOutstandingLoans = 0
     val loans = dataOrException.data
-
     loans?.let {
-        LazyColumn{
-            items(
-                items = loans
-            ){ loan ->
-                LoansCard( loan = loan,
-                    modifier = modifier)
+        it.forEach {loanAmount ->
+            if (!loanAmount.status){
+                totalOutstandingLoanAmount = totalOutstandingLoanAmount.plus(loanAmount.amountLoaned)
+                totalOutstandingLoans++
+            }
+        }
+        Column(modifier = modifier) {
+            Text(text = "There are $totalOutstandingLoans unpaid loans.", modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.h6)
+            Text(text = "The total amount of unpaid loan is KSH$totalOutstandingLoanAmount.", modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp), style = MaterialTheme.typography.body1)
+            LazyColumn{
+                items(
+                    items = loans
+                ){ loan ->
+                    LoansCard( loan = loan,
+                        modifier = Modifier.padding(start = 4.dp, end = 4.dp))
+                }
             }
         }
     }

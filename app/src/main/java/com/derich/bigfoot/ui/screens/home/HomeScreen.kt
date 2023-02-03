@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.derich.bigfoot.R
-import com.derich.bigfoot.ui.common.CircularProgressBar
+import com.derich.bigfoot.ui.common.composables.CircularProgressBar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -57,14 +57,12 @@ fun HomeComposable(modifier: Modifier = Modifier,
                     }
                     Spacer(modifier = Modifier.size(8.dp))
                 }
-                allMembersInfo.let {
-                    LazyColumn(modifier = Modifier.padding(top= 8.dp)) {
-                        items(
-                            items = allMembersInfo
-                        ) { contribution ->
-                            ContributionCard(contribution = contribution,
-                                modifier = modifier)
-                        }
+                LazyColumn(modifier = Modifier.padding(top= 8.dp)) {
+                    items(
+                        items = allMembersInfo
+                    ) { contribution ->
+                        ContributionCard(contribution = contribution,
+                            modifier = modifier)
                     }
                 }
             }

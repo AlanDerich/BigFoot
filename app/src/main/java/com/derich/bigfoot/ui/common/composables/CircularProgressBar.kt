@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.common
+package com.derich.bigfoot.ui.common.composables
 
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable

@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.common
+package com.derich.bigfoot.ui.common.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

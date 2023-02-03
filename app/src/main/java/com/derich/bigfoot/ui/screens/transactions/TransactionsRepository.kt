@@ -8,8 +8,7 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Singleton
 
 @Singleton
-class TransactionsRepository()
-{
+class TransactionsRepository {
     private val firestoreQueries: FirestoreQueries = FirestoreQueries()
     private val getAllTransactions : Query = firestoreQueries.queryAllTransactions()
   suspend fun getAllTransactionsFromFirestone(): DataOrException<List<Transactions>, Exception> {

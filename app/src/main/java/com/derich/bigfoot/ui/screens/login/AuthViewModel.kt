@@ -22,7 +22,6 @@ constructor(private val accountService: AuthService,
 
     private val _number: MutableStateFlow<String> = MutableStateFlow("")
     val number: StateFlow<String> get() = _number
-    val authState: FirebaseAuth = firebaseAuth
     private val _code: MutableStateFlow<String> = MutableStateFlow("")
     val code: StateFlow<String> get() = _code
     fun authenticatePhone(phone: String) {
@@ -31,7 +30,9 @@ constructor(private val accountService: AuthService,
     fun logOut(context: Context) {
         firebaseAuth.signOut()
         resetAuthState()
-        context.startActivity(Intent(context, LoginActivity::class.java))
+        val intent = Intent(context, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        context.startActivity(intent)
 
     }
     fun resetAuthState() {
@@ -52,7 +53,7 @@ constructor(private val accountService: AuthService,
             accountService.onVerifyOtp(code)
         }
     }
-    fun uploadImageToDb() {}
+//    fun uploadImageToDb() {}
 
 
 }
