@@ -33,7 +33,9 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
-fun BottomNavigator(navController: NavController) {
+fun BottomNavigator(
+    navController: NavController,
+    contViewModel: ContributionsViewModel) {
     val items = listOf(
         BottomNavItem.Home,
         BottomNavItem.Transactions,
@@ -55,6 +57,7 @@ fun BottomNavigator(navController: NavController) {
                 unselectedContentColor = Color.Black.copy(0.4f),
                 alwaysShowLabel = true,
                 selected = currentRoute == item.screen_route,
+                enabled = contViewModel.memberData.value.data?.isNotEmpty() ?: false,
                 onClick = {
                     navController.navigate(item.screen_route) {
 
@@ -78,9 +81,9 @@ fun NavigationGraph(
     modifier: Modifier,
     transactionsViewModel: TransactionsViewModel,
     authVm: AuthViewModel,
-    loansVM: LoansViewModel
+    loansVM: LoansViewModel,
+    allMemberInfo: List<MemberDetails>?
 ) {
-    val allMemberInfo: List<MemberDetails>? = contViewModel.memberData.value.data
 //    var allMemberInfo by remember { mutableStateOf(List<MemberDetails>) }
     val memberDetails: MemberDetails
     if (allMemberInfo != null){
