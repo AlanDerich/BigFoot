@@ -4,6 +4,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import com.derich.bigfoot.ui.bottomnavigation.BottomNavItem
 import com.derich.bigfoot.ui.data.DataOrException
 import kotlinx.coroutines.launch
 
@@ -26,5 +28,11 @@ class TransactionsViewModel : ViewModel() {
             data.value = repository.getAllTransactionsFromFirestone()
             loading.value = false
         }
+    }
+    fun launchAddTransactionScreen(navController: NavController) {
+        navController.navigate(BottomNavItem.AddTransaction.screen_route)
+    }
+    fun addTransaction() {
+
     }
 }

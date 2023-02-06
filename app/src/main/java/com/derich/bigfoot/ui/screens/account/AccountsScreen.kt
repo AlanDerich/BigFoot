@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.derich.bigfoot.R
 import com.derich.bigfoot.ui.screens.home.MemberDetails
 import com.derich.bigfoot.ui.screens.login.AuthViewModel
 import com.derich.bigfoot.ui.theme.BigFootTheme
@@ -36,7 +37,7 @@ fun AccountsComposable(
                     .clip(MaterialTheme.shapes.medium))
             },
             onClick = {}) } }) {
-            Image(painter = painterResource(id = com.derich.bigfoot.R.drawable.bigfut1),
+            Image(painter = painterResource(id = R.drawable.bigfut1),
                 contentDescription = "App Icon",
                 modifier = Modifier
                     .size(140.dp)

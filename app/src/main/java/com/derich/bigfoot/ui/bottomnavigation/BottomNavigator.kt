@@ -21,6 +21,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.derich.bigfoot.R
 import com.derich.bigfoot.ui.common.composables.CircularProgressBar
 import com.derich.bigfoot.ui.screens.account.AccountsComposable
+import com.derich.bigfoot.ui.screens.addtransaction.AddTransactionScreen
 import com.derich.bigfoot.ui.screens.home.ContributionsViewModel
 import com.derich.bigfoot.ui.screens.home.HomeComposable
 import com.derich.bigfoot.ui.screens.home.MemberDetails
@@ -96,7 +97,7 @@ fun NavigationGraph(
 
             composable(BottomNavItem.Transactions.screen_route) {
                 TransactionsComposable(transactionsViewModel = transactionsViewModel,
-                        memberInfo = memberDetails)
+                        memberInfo = memberDetails, navController = navController)
             }
             composable(BottomNavItem.Loans.screen_route) {
                     LoansComposable(loansViewModel = loansVM,
@@ -105,6 +106,10 @@ fun NavigationGraph(
             composable(BottomNavItem.Account.screen_route) {
                 AccountsComposable(authViewModel = authVm,
                     memberInfo = memberDetails)
+            }
+            composable(BottomNavItem.AddTransaction.screen_route) {
+                AddTransactionScreen(transactionsViewModel = transactionsViewModel,
+                    allMemberInfo = allMemberInfo)
             }
         }
     }
