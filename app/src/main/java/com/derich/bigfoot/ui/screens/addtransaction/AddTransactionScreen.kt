@@ -2,6 +2,7 @@ package com.derich.bigfoot.ui.screens.addtransaction
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -46,7 +47,10 @@ fun AddTransactionScreen(transactionsViewModel: TransactionsViewModel,
                 )
             }
             Spacer(
-                modifier = Modifier.matchParentSize().background(Color.Transparent).padding(10.dp)
+                modifier = Modifier
+                    .matchParentSize()
+                    .background(Color.Transparent)
+                    .padding(10.dp)
                     .clickable(
                         onClick = { isOpen.value = true }
                     )
@@ -61,15 +65,36 @@ fun AddTransactionScreen(transactionsViewModel: TransactionsViewModel,
 @Composable
 fun AddTransactionPage(selectedMember: MemberDetails,
                        transactionsViewModel: TransactionsViewModel) {
-    var dateOfTransaction by remember { mutableStateOf("01/01/2020") }
+    var dateOfTransaction by remember { mutableStateOf("2020/01/01") }
     var transactionPaidBy by remember { mutableStateOf("") }
     var transactionAmountPaid by remember { mutableStateOf("0") }
     var transactionConfirmation by remember { mutableStateOf("") }
-    OutlinedTextField(
-        label = { Text(text = "Date of Transaction") },
-        value = dateOfTransaction,
-        onValueChange = {dateOfTransaction = it},
-        modifier = Modifier.padding(top = 4.dp))
+    // Fetching the Local Context
+    val mContext = LocalContext.current
+    OutlinedButton(onClick = {
+        val yearSelected: Int
+        val monthSelected: Int
+        val daySelected: Int
+        // Initializing a Calendar
+        val mCalendar = Calendar.getInstance()
+        // Fetching current year, month and day
+        yearSelected = mCalendar.get(Calendar.YEAR)
+        monthSelected = mCalendar.get(Calendar.MONTH)
+        daySelected = mCalendar.get(Calendar.DAY_OF_MONTH)
+        mCalendar.time = Date()
+        DatePickerDialog(
+            mContext,
+            { _: DatePicker, mYear, mMonth, mDayOfMonth ->
+                val month = String.format("%02d", mMonth+1)
+                val date = String.format("%02d", mDayOfMonth)
+                dateOfTransaction = "$mYear/${month}/$date"
+            }, yearSelected, monthSelected, daySelected
+        ).show()
+        Toast.makeText(mContext, dateOfTransaction, Toast.LENGTH_SHORT).show()
+    }) {
+        Text(text = dateOfTransaction)
+
+    }
     OutlinedTextField(
         label = { Text(text = "Paid by") },
         value = transactionPaidBy,
@@ -124,40 +149,4 @@ fun DropDownList(
             }
         }
     }
-}
-@Composable
-fun MyDatePicker(): String{
-
-    // Fetching the Local Context
-    val mContext = LocalContext.current
-
-    // Declaring integer values
-    // for year, month and day
-    val mYear: Int
-    val mMonth: Int
-    val mDay: Int
-
-    // Initializing a Calendar
-    val mCalendar = Calendar.getInstance()
-
-    // Fetching current year, month and day
-    mYear = mCalendar.get(Calendar.YEAR)
-    mMonth = mCalendar.get(Calendar.MONTH)
-    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
-
-    mCalendar.time = Date()
-
-    // Declaring a string value to
-    // store date in string format
-    val mDate = remember { mutableStateOf("") }
-
-    // Declaring DatePickerDialog and setting
-    // initial values as current values (present year, month and day)
-    val mDatePickerDialog = DatePickerDialog(
-        mContext,
-        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            mDate.value = "$mDayOfMonth/${mMonth+1}/$mYear"
-        }, mYear, mMonth, mDay
-    )
-    return mDate.value
 }

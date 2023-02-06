@@ -136,7 +136,7 @@ fun getMemberData(memberInfo: List<MemberDetails>): MemberDetails? {
     memberInfo.forEach {memberDetails ->
         if (memberDetails.phoneNumber == FirebaseAuth.getInstance().currentUser!!.phoneNumber){
             memberDets = memberDetails
-            return memberDetails
+            return memberDets
         }
     }
     return memberDets
