@@ -32,7 +32,7 @@ class TransactionsViewModel : ViewModel() {
     fun launchAddTransactionScreen(navController: NavController) {
         navController.navigate(BottomNavItem.AddTransaction.screen_route)
     }
-    fun addTransaction() {
+    fun addTransaction(transactionDetails: Transactions, contributionDate: String) {
 
     }
 }

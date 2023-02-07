@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.derich.bigfoot.ui.screens.home.MemberDetails
+import com.derich.bigfoot.ui.screens.transactions.Transactions
 import com.derich.bigfoot.ui.screens.transactions.TransactionsViewModel
 import java.util.*
 
@@ -66,6 +67,7 @@ fun AddTransactionScreen(transactionsViewModel: TransactionsViewModel,
 fun AddTransactionPage(selectedMember: MemberDetails,
                        transactionsViewModel: TransactionsViewModel) {
     var dateOfTransaction by remember { mutableStateOf("2020/01/01") }
+    var reversedDateOfTransaction by remember { mutableStateOf("01/01/2020") }
     var transactionPaidBy by remember { mutableStateOf("") }
     var transactionAmountPaid by remember { mutableStateOf("0") }
     var transactionConfirmation by remember { mutableStateOf("") }
@@ -87,7 +89,8 @@ fun AddTransactionPage(selectedMember: MemberDetails,
             { _: DatePicker, mYear, mMonth, mDayOfMonth ->
                 val month = String.format("%02d", mMonth+1)
                 val date = String.format("%02d", mDayOfMonth)
-                dateOfTransaction = "$mYear/${month}/$date"
+                dateOfTransaction = "$mYear/$month/$date"
+                reversedDateOfTransaction = "$date/${month}/$mYear"
             }, yearSelected, monthSelected, daySelected
         ).show()
         Toast.makeText(mContext, dateOfTransaction, Toast.LENGTH_SHORT).show()
@@ -99,18 +102,21 @@ fun AddTransactionPage(selectedMember: MemberDetails,
         label = { Text(text = "Paid by") },
         value = transactionPaidBy,
         onValueChange = {transactionPaidBy = it},
-        modifier = Modifier.padding(top = 4.dp))
+        modifier = Modifier.padding(top = 4.dp),
+        isError = (transactionPaidBy == ""))
     OutlinedTextField(value = transactionAmountPaid,
         onValueChange = { transactionAmountPaid = it },
         label = { Text(text = "Amount paid") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        modifier = Modifier.padding(top = 4.dp)
+        modifier = Modifier.padding(top = 4.dp),
+        isError = (transactionAmountPaid == "0")
         )
     OutlinedTextField(
         label = { Text(text = "Confirmation Message") },
         value = transactionConfirmation,
         onValueChange = {transactionConfirmation = it},
-        modifier = Modifier.padding(top = 4.dp))
+        modifier = Modifier.padding(top = 4.dp),
+        isError = (transactionConfirmation == ""))
     OutlinedTextField(
         label = { Text(text = "Previous amount") },
         value = selectedMember.totalAmount,
@@ -118,7 +124,26 @@ fun AddTransactionPage(selectedMember: MemberDetails,
         onValueChange = {},
         modifier = Modifier.padding(top = 4.dp))
         Button(
-            onClick = { transactionsViewModel.addTransaction() },
+            onClick = {
+                if (dateOfTransaction != "2020/01/01"
+                    && transactionConfirmation  != ""
+                    && transactionAmountPaid != "0"
+                    && transactionPaidBy != "")
+                {
+                    transactionsViewModel.addTransaction(
+                        transactionDetails = Transactions(
+                            transactionDate = dateOfTransaction,
+                            depositFor = selectedMember.fullNames,
+                            depositBy = transactionPaidBy,
+                            transactionAmount = transactionAmountPaid.toInt(),
+                            transactionConfirmation = transactionConfirmation),
+                        contributionDate = reversedDateOfTransaction)
+                }
+                else {
+                    Toast.makeText(mContext, "Please confirm the details again", Toast.LENGTH_SHORT).show()
+                }
+
+                      },
             modifier = Modifier.padding(top = 4.dp))
         {
             Text(text = "Add Transaction")

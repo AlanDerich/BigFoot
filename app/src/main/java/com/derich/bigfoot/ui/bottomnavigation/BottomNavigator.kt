@@ -132,12 +132,12 @@ fun ErrorScreen(e: String) {
 }
 
 fun getMemberData(memberInfo: List<MemberDetails>): MemberDetails? {
-    var memberDets: MemberDetails? = null
+    var memberDets: MemberDetails?
     memberInfo.forEach {memberDetails ->
         if (memberDetails.phoneNumber == FirebaseAuth.getInstance().currentUser!!.phoneNumber){
             memberDets = memberDetails
             return memberDets
         }
     }
-    return memberDets
+    return null
 }
