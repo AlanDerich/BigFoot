@@ -1,9 +1,9 @@
 package com.derich.bigfoot.ui.screens.transactions
 
 data class Transactions (
-    var transactionDate:String? = null,
-    var depositFor:String? = null,
-    var depositBy:String? = null,
-    var transactionAmount:Int? = null,
-    var transactionConfirmation:String? = null
+    var transactionDate:String = "",
+    var depositFor:String = "",
+    var depositBy:String = "",
+    var transactionAmount:Int = 0,
+    var transactionConfirmation:String = ""
 )

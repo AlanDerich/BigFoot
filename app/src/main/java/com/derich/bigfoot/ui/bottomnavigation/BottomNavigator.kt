@@ -109,7 +109,7 @@ fun NavigationGraph(
             }
             composable(BottomNavItem.AddTransaction.screen_route) {
                 AddTransactionScreen(transactionsViewModel = transactionsViewModel,
-                    allMemberInfo = allMemberInfo)
+                    allMemberInfo = allMemberInfo, navController = navController)
             }
         }
     }

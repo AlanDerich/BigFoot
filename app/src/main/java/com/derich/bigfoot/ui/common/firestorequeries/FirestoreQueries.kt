@@ -1,7 +1,10 @@
 package com.derich.bigfoot.ui.common.firestorequeries
 
+import com.derich.bigfoot.ui.screens.transactions.Transactions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Singleton
 
 @Singleton
@@ -18,15 +21,26 @@ class FirestoreQueries {
     fun queryAllMemberDetails() = firebaseFirestore
         .collectionGroup("allMembers")
         .orderBy("totalAmount", Query.Direction.DESCENDING)
+    private val sdfDate = SimpleDateFormat("dd-M-yyyy", Locale.US)
+    private val sdfTime = SimpleDateFormat("hh:mm:ss", Locale.US)
+    private val currentDate = sdfDate.format(Date())
+    private val currentTime = sdfTime.format(Date())
+    fun uploadToTransactions(transactionDetails: Transactions) =
+        firebaseFirestore.collection("Transactions")
+        .document(currentDate)
+        .collection("allTransactions")
+        .document(currentTime)
+        .set(transactionDetails)
+    fun updateContributionsDetails(
+        memberPhoneNumber: String,
+        memberFullNames: String,
+        resultingDate: String, newUserAmount: String) =
+        firebaseFirestore.collection("Members")
+        .document(memberPhoneNumber)
+        .collection("allMembers")
+        .document(memberFullNames)
+        .update(
+            "contributionsDate", resultingDate,
+            "totalAmount", newUserAmount
+        )
 }
-//    fun queryTransactionsByUsername(fullNames: String) = firebaseFirestore
-//        .collectionGroup("allTransactions").whereEqualTo("depositFor",fullNames)
-//        .orderBy("transactionDate",Query.Direction.DESCENDING)
-
-//    fun queryAllContributions() = firebaseFirestore
-//        .collectionGroup("Totals")
-//        .orderBy("totalAmount", Query.Direction.DESCENDING)
-
-//    fun queryMemberDetails(phoneNumber: String) = firebaseFirestore
-//        .collectionGroup("allMembers")
-//        .whereEqualTo("phoneNumber", phoneNumber)
