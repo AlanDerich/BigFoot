@@ -38,7 +38,7 @@ fun HomeComposable(modifier: Modifier = Modifier,
 //        val memberCont = contributions!!.contains("", )
 
             Column(modifier = modifier.padding(8.dp)) {
-                Row {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     val differenceInContributions = viewModel.calculateContributionsDifference(
                         specificMemberDetails.totalAmount.toInt()
                     )
@@ -47,7 +47,7 @@ fun HomeComposable(modifier: Modifier = Modifier,
                             contentDescription = "Status of Contribution",
                             modifier = Modifier.size(68.dp))
                         Spacer(modifier = Modifier.padding(2.dp))
-                        Text(text = "Hello ${specificMemberDetails.firstName}, you\'re on ${specificMemberDetails.contributionsDate}. Congrats! You are KSH $differenceInContributions ahead on schedule")
+                        Text(text = "Hello ${specificMemberDetails.firstName}, you\'re on ${specificMemberDetails.contributionsDate}. Congrats! You are KSH ${-differenceInContributions} ahead on schedule")
                     }
                     else{
                         Icon(painter = painterResource(id = R.drawable.baseline_cancel_24),
