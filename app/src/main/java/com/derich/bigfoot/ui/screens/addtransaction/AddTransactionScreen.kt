@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -30,7 +31,7 @@ fun AddTransactionScreen(transactionsViewModel: TransactionsViewModel,
 //    var requestToOpen by remember { mutableStateOf(false) }
     Column(modifier = modifier.padding(8.dp)) {
         var selectedMember by remember { mutableStateOf(allMemberInfo[0]) }
-        val isOpen = remember { mutableStateOf(false) } // initial value
+        val isOpen = rememberSaveable { mutableStateOf(false) } // initial value
         val openCloseOfDropDownList: (Boolean) -> Unit = {
             isOpen.value = it
         }
@@ -72,12 +73,12 @@ fun AddTransactionScreen(transactionsViewModel: TransactionsViewModel,
 @Composable
 fun AddTransactionPage(selectedMember: MemberDetails,
                        transactionsViewModel: TransactionsViewModel, navController: NavController) {
-    var dateOfTransaction by remember { mutableStateOf("2020/01/01") }
-    var reversedDateOfTransaction by remember { mutableStateOf("01/01/2020") }
-    var transactionPaidBy by remember { mutableStateOf("") }
-    var transactionAmountPaid by remember { mutableStateOf("0") }
-    var transactionConfirmation by remember { mutableStateOf("") }
-    var buttonEnabled by remember { mutableStateOf(true) }
+    var dateOfTransaction by rememberSaveable { mutableStateOf("2020/01/01") }
+    var reversedDateOfTransaction by rememberSaveable { mutableStateOf("01/01/2020") }
+    var transactionPaidBy by rememberSaveable { mutableStateOf("") }
+    var transactionAmountPaid by rememberSaveable { mutableStateOf("0") }
+    var transactionConfirmation by rememberSaveable { mutableStateOf("") }
+    var buttonEnabled by rememberSaveable { mutableStateOf(true) }
     // Fetching the Local Context
     val mContext = LocalContext.current
     OutlinedButton(onClick = {
@@ -148,10 +149,21 @@ fun AddTransactionPage(selectedMember: MemberDetails,
                         transactionConfirmation = transactionConfirmation),
                     previousAmount = selectedMember.totalAmount.toInt(),
                     memberPhone = selectedMember.phoneNumber)
-                    if(transactionsViewModel.uploadingStatus.value) {
-                    Toast.makeText(mContext, "Uploaded successfully", Toast.LENGTH_SHORT).show()
-                    transactionsViewModel.launchTransactionScreen(navController)
+                    if(transactionsViewModel.uploadStatus.value) {
+                        Toast.makeText(mContext, "Still uploading", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        //check if both transactions and contributions were updated successfully
+                        if(transactionsViewModel.transactionUploadStatus && transactionsViewModel.contUploadStatus) {
+                            Toast.makeText(mContext, "Both transactions and MemberContributions Uploaded successfully", Toast.LENGTH_SHORT).show()
+                            transactionsViewModel.launchTransactionScreen(navController)
                         }
+                        //show status to know which failed
+                        else {
+                            Toast.makeText(mContext, "Transactions status ${transactionsViewModel.transactionUploadStatus} and MemberContributions Uploaded status ${transactionsViewModel.contUploadStatus}", Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
                 }
                 else {
                     Toast.makeText(mContext, "Please confirm the details again", Toast.LENGTH_SHORT).show()
@@ -163,7 +175,7 @@ fun AddTransactionPage(selectedMember: MemberDetails,
             Text(text = "Add Transaction")
         }
     CircularProgressBar(
-        isDisplayed = transactionsViewModel.uploadingToDB.value
+        isDisplayed = transactionsViewModel.uploadStatus.value
     )
 }
 

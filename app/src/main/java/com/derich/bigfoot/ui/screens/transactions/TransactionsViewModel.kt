@@ -14,8 +14,9 @@ import java.util.*
 class TransactionsViewModel : ViewModel() {
     private val repository: TransactionsRepository = TransactionsRepository()
     var loading = mutableStateOf(false)
-    var uploadingToDB = mutableStateOf(false)
-    var uploadingStatus = mutableStateOf(false)
+    var uploadStatus = mutableStateOf(false)
+    var transactionUploadStatus = false
+    var contUploadStatus = false
     val data: MutableState<DataOrException<List<Transactions>, Exception>> = mutableStateOf(
         DataOrException(
             listOf(),
@@ -42,20 +43,16 @@ class TransactionsViewModel : ViewModel() {
     fun addTransaction(transactionDetails: Transactions,
                        previousAmount: Int,
                        memberPhone: String) {
-        uploadingToDB.value = true
-        viewModelScope.launch {
-            uploadingStatus.value = if (repository.uploadTransactionToDb(transactionDetails)){
-                repository.updateMemberContributions(
-                    memberPhoneNumber = memberPhone,
-                    memberFullNames = transactionDetails.depositFor,
-                    resultingDate = calculateResultingDate(previousAmount + (transactionDetails.transactionAmount)),
-                    newUserAmount = (previousAmount + (transactionDetails.transactionAmount)).toString())
-                true
-            } else{
-                false
-            }
-        }
-        uploadingToDB.value = false
+        //check if upload job is complete or not
+        val waitingForResponse = viewModelScope.launch {
+            transactionUploadStatus = repository.uploadTransactionToDb(transactionDetails)
+            contUploadStatus = repository.updateMemberContributions(
+                memberPhoneNumber = memberPhone,
+                memberFullNames = transactionDetails.depositFor,
+                resultingDate = calculateResultingDate(previousAmount + (transactionDetails.transactionAmount)),
+                newUserAmount = (previousAmount + (transactionDetails.transactionAmount)).toString())
+        }.isActive
+        uploadStatus.value = waitingForResponse
     }
     private fun calculateResultingDate(newUserAmount: Int): String {
         val totalDays: Int = (newUserAmount / 20)

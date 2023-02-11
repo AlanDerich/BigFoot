@@ -22,21 +22,20 @@ class TransactionsRepository {
       }
       return dataOrException
   }
-    suspend fun uploadTransactionToDb(transactionDetails: Transactions) : Boolean{
+    fun uploadTransactionToDb(transactionDetails: Transactions) : Boolean{
         return try{
-            firestoreQueries.uploadToTransactions(transactionDetails = transactionDetails)
-                .await()
+            firestoreQueries.uploadToTransactions(transactionDetails = transactionDetails).isSuccessful
             true
         }catch (e : Exception){
             false
         }
     }
-    suspend fun updateMemberContributions(memberPhoneNumber: String,
+    fun updateMemberContributions(memberPhoneNumber: String,
                                           memberFullNames: String,
                                           resultingDate: String, newUserAmount: String) : Boolean{
         return try{
             firestoreQueries.updateContributionsDetails(memberPhoneNumber, memberFullNames, resultingDate, newUserAmount)
-                .await()
+                .isSuccessful
             true
         }catch (e : Exception){
             false
