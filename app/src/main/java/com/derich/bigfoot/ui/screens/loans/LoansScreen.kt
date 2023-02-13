@@ -24,11 +24,10 @@ fun LoansComposable(modifier: Modifier = Modifier,
                     memberInfo: MemberDetails?) {
     //this screen contains details on loans history
 //get data from firebase firestone
-    val dataOrException = loansViewModel.data.value
     var totalOutstandingLoanAmount = 0
     var totalOutstandingLoans = 0
-    val loans = dataOrException.data
-    loans?.let {
+    val loans = loansViewModel.loans
+    loans.let {
         it.forEach {loanAmount ->
             if (!loanAmount.status){
                 totalOutstandingLoanAmount = totalOutstandingLoanAmount.plus(loanAmount.amountLoaned)
@@ -48,13 +47,6 @@ fun LoansComposable(modifier: Modifier = Modifier,
             }
         }
     }
-    val e = dataOrException.e
-    e?.let {
-        Text(text = e.message!!,
-            modifier = modifier.padding(16.dp)
-        )
-    }
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

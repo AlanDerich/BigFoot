@@ -1,13 +1,23 @@
 package com.derich.bigfoot.ui.screens.loans
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.derich.bigfoot.ui.common.BigFootViewModel
+import com.derich.bigfoot.ui.common.LogService
+import com.derich.bigfoot.ui.common.firestorequeries.StorageService
 import com.derich.bigfoot.ui.data.DataOrException
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoansViewModel : ViewModel() {
+@HiltViewModel
+class LoansViewModel @Inject constructor(
+    logService: LogService,
+    private val storageService: StorageService
+) : BigFootViewModel(logService) {
+    var loans: List<Loan> = mutableStateListOf()
     private val repository: LoansRepository = LoansRepository()
     var loading = mutableStateOf(false)
     val data: MutableState<DataOrException<List<Loan>, Exception>> = mutableStateOf(
@@ -16,10 +26,11 @@ class LoansViewModel : ViewModel() {
             Exception("")
         )
     )
-    init {
-        getAllLoans()
+    fun initialize() {
+        launchCatching {
+                loans = storageService.getLoans()
+        }
     }
-
     private fun getAllLoans() {
         viewModelScope.launch {
             loading.value = true

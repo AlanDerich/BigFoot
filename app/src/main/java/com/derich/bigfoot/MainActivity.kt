@@ -8,9 +8,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -47,9 +45,9 @@ class MainActivity : ComponentActivity() {
                 val membersData = contributionsVM.memberData.value.data
                 val transactionsVM: TransactionsViewModel by viewModels()
                 val loansVM: LoansViewModel by viewModels()
+                LaunchedEffect(Unit) { loansVM.initialize() }
                 //login viewmodel handling all login activities
                 val authVM: AuthViewModel = viewModel()
-                val bottomState by remember { mutableStateOf(membersData?.isNotEmpty() ?: false) }
 
 
                 FirebaseApp.initializeApp(/*context=*/this)
