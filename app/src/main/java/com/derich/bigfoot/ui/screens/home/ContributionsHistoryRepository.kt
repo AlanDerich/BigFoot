@@ -2,6 +2,7 @@ package com.derich.bigfoot.ui.screens.home
 
 import com.derich.bigfoot.ui.common.firestorequeries.FirestoreQueries
 import com.derich.bigfoot.ui.data.DataOrException
+import com.derich.bigfoot.ui.model.MemberDetails
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await

@@ -14,7 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.derich.bigfoot.ui.common.composables.CircularProgressBar
-import com.derich.bigfoot.ui.screens.home.MemberDetails
+import com.derich.bigfoot.ui.model.Loan
+import com.derich.bigfoot.ui.model.MemberDetails
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -53,7 +54,7 @@ fun LoansComposable(modifier: Modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CircularProgressBar(
-            isDisplayed = loansViewModel.loading.value
+            isDisplayed = loansViewModel.loans.isEmpty()
         )
 
     }
@@ -61,7 +62,7 @@ fun LoansComposable(modifier: Modifier = Modifier,
 
 @Composable
 fun LoansCard(loan: Loan,
-                    modifier: Modifier
+              modifier: Modifier
 ) {
     Column(horizontalAlignment = Alignment.Start,
         modifier = modifier

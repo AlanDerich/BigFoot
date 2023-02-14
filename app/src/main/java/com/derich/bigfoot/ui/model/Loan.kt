@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.screens.loans
+package com.derich.bigfoot.ui.model
 
 data class Loan(
     var username: String = "",

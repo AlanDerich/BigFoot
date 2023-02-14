@@ -42,10 +42,11 @@ class MainActivity : ComponentActivity() {
             if(FirebaseAuth.getInstance().currentUser != null) {
                 //viewmodel handling all actions on contributions
                 val contributionsVM: ContributionsViewModel by viewModels()
-                val membersData = contributionsVM.memberData.value.data
                 val transactionsVM: TransactionsViewModel by viewModels()
                 val loansVM: LoansViewModel by viewModels()
                 LaunchedEffect(Unit) { loansVM.initialize() }
+                LaunchedEffect(Unit) { transactionsVM.initialize() }
+                LaunchedEffect(Unit) { contributionsVM.initialize() }
                 //login viewmodel handling all login activities
                 val authVM: AuthViewModel = viewModel()
 
@@ -74,7 +75,7 @@ class MainActivity : ComponentActivity() {
                             transactionsViewModel = transactionsVM,
                             authVm = authVM,
                             loansVM = loansVM,
-                            allMemberInfo = membersData
+                            allMemberInfo = contributionsVM.members
                         )
 
                     }

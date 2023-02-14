@@ -1,8 +1,8 @@
 package com.derich.bigfoot.ui.common.firestorequeries
 
-import com.derich.bigfoot.ui.screens.home.MemberDetails
-import com.derich.bigfoot.ui.screens.loans.Loan
-import com.derich.bigfoot.ui.screens.transactions.Transactions
+import com.derich.bigfoot.ui.model.Loan
+import com.derich.bigfoot.ui.model.MemberDetails
+import com.derich.bigfoot.ui.model.Transactions
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -36,16 +36,18 @@ constructor(private val firestore: FirebaseFirestore) :
             memberDetailsCollection().snapshots().map { snapshot -> snapshot.toObjects() }
 
     //retrieval functions
-    override suspend fun getAllTransactions(): List<Transactions?> {
-        return trace(GET_ALL_MEMBER_DETAILS) {memberDetailsCollection().get().await().toObjects(Transactions::class.java)}
+    override suspend fun getAllTransactions(): List<Transactions> {
+        return trace(GET_ALL_TRANSACTIONS) {transactionsCollection().get().await().toObjects(
+            Transactions::class.java)}
     }
 
     override suspend fun getLoans(): List<Loan> {
         return trace(GET_ALL_LOANS) { loansCollection().get().await().toObjects(Loan::class.java) }
     }
 
-    override suspend fun getMembers(): List<MemberDetails?> {
-        return trace(GET_ALL_TRANSACTIONS) { memberDetailsCollection().get().await().toObjects(MemberDetails::class.java) }
+    override suspend fun getMembers(): List<MemberDetails> {
+        return trace(GET_ALL_MEMBER_DETAILS) { memberDetailsCollection().get().await().toObjects(
+            MemberDetails::class.java) }
     }
 
     //create new details functions

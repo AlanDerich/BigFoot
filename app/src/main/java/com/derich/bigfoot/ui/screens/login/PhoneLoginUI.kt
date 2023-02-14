@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.derich.bigfoot.R
+import com.derich.bigfoot.ui.model.Response
 
 @Composable
 fun PhoneLoginUI(

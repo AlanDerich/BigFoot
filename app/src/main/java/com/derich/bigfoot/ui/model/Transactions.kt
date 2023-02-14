@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.screens.transactions
+package com.derich.bigfoot.ui.model
 
 data class Transactions (
     var transactionDate:String = "",

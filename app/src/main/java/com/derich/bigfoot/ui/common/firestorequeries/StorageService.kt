@@ -1,8 +1,8 @@
 package com.derich.bigfoot.ui.common.firestorequeries
 
-import com.derich.bigfoot.ui.screens.home.MemberDetails
-import com.derich.bigfoot.ui.screens.loans.Loan
-import com.derich.bigfoot.ui.screens.transactions.Transactions
+import com.derich.bigfoot.ui.model.Loan
+import com.derich.bigfoot.ui.model.MemberDetails
+import com.derich.bigfoot.ui.model.Transactions
 import kotlinx.coroutines.flow.Flow
 
 interface StorageService {
@@ -10,8 +10,8 @@ interface StorageService {
     val transactions: Flow<List<Transactions>>
     val loans: Flow<List<Loan>>
     //getting existing functions
-    suspend fun getAllTransactions(): List<Transactions?>
-    suspend fun getMembers(): List<MemberDetails?>
+    suspend fun getAllTransactions(): List<Transactions>
+    suspend fun getMembers(): List<MemberDetails>
     suspend fun getLoans(): List<Loan>
     //add new details functions
     suspend fun saveNewTransaction(transactions: Transactions)

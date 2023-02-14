@@ -3,6 +3,7 @@ package com.derich.bigfoot.ui.screens.login
 import android.util.Log
 import com.derich.bigfoot.MainActivity
 import com.derich.bigfoot.R
+import com.derich.bigfoot.ui.model.Response
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*

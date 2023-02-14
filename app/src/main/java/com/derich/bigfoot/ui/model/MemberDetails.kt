@@ -1,4 +1,4 @@
-package com.derich.bigfoot.ui.screens.home
+package com.derich.bigfoot.ui.model
 
 data class MemberDetails (
     var phoneNumber:String="",

@@ -1,39 +1,48 @@
 package com.derich.bigfoot.ui.screens.transactions
 
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.derich.bigfoot.ui.bottomnavigation.BottomNavItem
-import com.derich.bigfoot.ui.data.DataOrException
+import com.derich.bigfoot.ui.common.BigFootViewModel
+import com.derich.bigfoot.ui.common.LogService
+import com.derich.bigfoot.ui.common.firestorequeries.StorageService
+import com.derich.bigfoot.ui.model.Transactions
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class TransactionsViewModel : ViewModel() {
+@HiltViewModel
+class TransactionsViewModel @Inject constructor(
+    logService: LogService,
+    private val storageService: StorageService
+) : BigFootViewModel(logService) {
+
+    var transactions: List<Transactions> = mutableStateListOf()
     private val repository: TransactionsRepository = TransactionsRepository()
-    var loading = mutableStateOf(false)
     var uploadStatus = mutableStateOf(false)
     var transactionUploadStatus = false
     var contUploadStatus = false
-    val data: MutableState<DataOrException<List<Transactions>, Exception>> = mutableStateOf(
-        DataOrException(
-            listOf(),
-            Exception("")
-        )
-    )
-    init {
-        getAllTransactions()
-    }
 
-    private fun getAllTransactions() {
-        viewModelScope.launch {
-            loading.value = true
-            data.value = repository.getAllTransactionsFromFirestone()
-            loading.value = false
+    fun initialize() {
+        launchCatching {
+            transactions = storageService.getAllTransactions()
         }
     }
+//    init {
+//        getAllTransactions()
+//    }
+
+//    private fun getAllTransactions() {
+//        viewModelScope.launch {
+//            loading.value = true
+//            data.value = repository.getAllTransactionsFromFirestone()
+//            loading.value = false
+//        }
+//    }
     fun launchAddTransactionScreen(navController: NavController) {
         navController.navigate(BottomNavItem.AddTransaction.screen_route)
     }

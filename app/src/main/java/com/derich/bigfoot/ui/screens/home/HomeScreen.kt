@@ -1,7 +1,6 @@
 package com.derich.bigfoot.ui.screens.home
 
 import android.app.Activity
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.derich.bigfoot.R
 import com.derich.bigfoot.ui.common.composables.CircularProgressBar
+import com.derich.bigfoot.ui.model.MemberDetails
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -67,24 +67,13 @@ fun HomeComposable(modifier: Modifier = Modifier,
                 }
             }
 
-
-
-        val e = viewModel.memberData.value.e
-        e?.let {
-            Text(
-                text = e.message!!,
-                modifier = Modifier.padding(16.dp)
-            )
-            Log.e("homepage", "Error $e")
-        }
-
         Column(
             modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CircularProgressBar(
-                isDisplayed = viewModel.loadingContributions.value || viewModel.loadingMemberDetails.value
+                isDisplayed = viewModel.members.isEmpty()
             )
 
         }

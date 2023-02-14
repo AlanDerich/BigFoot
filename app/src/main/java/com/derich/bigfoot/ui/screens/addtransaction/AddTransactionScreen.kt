@@ -17,17 +17,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.derich.bigfoot.ui.common.composables.CircularProgressBar
-import com.derich.bigfoot.ui.screens.home.MemberDetails
-import com.derich.bigfoot.ui.screens.transactions.Transactions
+import com.derich.bigfoot.ui.model.MemberDetails
+import com.derich.bigfoot.ui.model.Transactions
 import com.derich.bigfoot.ui.screens.transactions.TransactionsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 
 @Composable
-fun AddTransactionScreen(transactionsViewModel: TransactionsViewModel,
-                         allMemberInfo: List<MemberDetails>,
-                         modifier: Modifier = Modifier,
-                         navController: NavController) {
+fun AddTransactionScreen(
+    transactionsViewModel: TransactionsViewModel,
+    allMemberInfo: List<MemberDetails>,
+    modifier: Modifier = Modifier,
+    navController: NavController) {
 //    var requestToOpen by remember { mutableStateOf(false) }
     Column(modifier = modifier.padding(8.dp)) {
         var selectedMember by remember { mutableStateOf(allMemberInfo[0]) }

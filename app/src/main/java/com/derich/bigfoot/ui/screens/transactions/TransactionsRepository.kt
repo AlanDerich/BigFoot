@@ -2,6 +2,7 @@ package com.derich.bigfoot.ui.screens.transactions
 
 import com.derich.bigfoot.ui.common.firestorequeries.FirestoreQueries
 import com.derich.bigfoot.ui.data.DataOrException
+import com.derich.bigfoot.ui.model.Transactions
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await

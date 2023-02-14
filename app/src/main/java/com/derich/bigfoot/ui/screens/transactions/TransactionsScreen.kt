@@ -21,7 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.derich.bigfoot.R
 import com.derich.bigfoot.ui.common.composables.CircularProgressBar
-import com.derich.bigfoot.ui.screens.home.MemberDetails
+import com.derich.bigfoot.ui.model.MemberDetails
+import com.derich.bigfoot.ui.model.Transactions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -31,24 +32,20 @@ fun TransactionsComposable(modifier: Modifier = Modifier,
                            memberInfo: MemberDetails?,
                            navController: NavController) {
 
-    //get data from firebase firestone
-    val dataOrException = transactionsViewModel.data.value
     val context = LocalContext.current
-    val transactions = dataOrException.data
+    val transactions = transactionsViewModel.transactions
 //    DropdownMenu(expanded = , onDismissRequest = { /*TODO*/ }) {
 //
 //    }
     Box(modifier = modifier,
         contentAlignment = Alignment.BottomEnd) {
 //display all the transactions as a horizontal list
-        transactions?.let {
-            LazyColumn{
-                items(
-                    items = transactions
-                ){ transaction ->
-                    TransactionCard( transaction = transaction,
-                        modifier = modifier)
-                }
+        LazyColumn{
+            items(
+                items = transactions
+            ){ transaction ->
+                TransactionCard( transaction = transaction,
+                    modifier = modifier)
             }
         }
         //check if member is admin and launch addTransaction page
@@ -70,20 +67,13 @@ fun TransactionsComposable(modifier: Modifier = Modifier,
         }
     }
 
-    val e = dataOrException.e
-    e?.let {
-        Text(text = e.message!!,
-            modifier = modifier.padding(16.dp)
-        )
-    }
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CircularProgressBar(
-            isDisplayed = transactionsViewModel.loading.value
+            isDisplayed = transactionsViewModel.transactions.isEmpty()
         )
 
     }
@@ -98,17 +88,17 @@ fun TransactionCard(transaction: Transactions,
                 .border(border = BorderStroke(width = 2.dp, color = Color.White))
                 .padding(8.dp)
                 .fillMaxWidth()) {
-            Text(text = transaction.depositFor!!,
+            Text(text = transaction.depositFor,
                 style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp))
             Spacer(modifier = Modifier.padding(2.dp))
-            Text(text = "Date: ${ transaction.transactionDate!! }",
+            Text(text = "Date: ${ transaction.transactionDate }",
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp))
             Spacer(modifier = Modifier.padding(2.dp))
             Text(text = "Amount: KSH ${ transaction.transactionAmount }",
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp))
             Spacer(modifier = Modifier.padding(2.dp))
-            Text(text = transaction.transactionConfirmation!!,
+            Text(text = transaction.transactionConfirmation,
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp),
                 maxLines = 4,
                 overflow = TextOverflow.Ellipsis)

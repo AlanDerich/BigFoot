@@ -1,38 +1,40 @@
 package com.derich.bigfoot.ui.screens.home
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.derich.bigfoot.ui.data.DataOrException
-import kotlinx.coroutines.launch
+import androidx.compose.runtime.mutableStateListOf
+import com.derich.bigfoot.ui.common.BigFootViewModel
+import com.derich.bigfoot.ui.common.LogService
+import com.derich.bigfoot.ui.common.firestorequeries.StorageService
+import com.derich.bigfoot.ui.model.MemberDetails
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 
-class ContributionsViewModel : ViewModel() {
+@HiltViewModel
+class ContributionsViewModel @Inject constructor(
+    logService: LogService,
+    private val storageService: StorageService
+) : BigFootViewModel(logService) {
+    var members: List<MemberDetails> = mutableStateListOf()
     private val contributionsRepository: ContributionsHistoryRepository = ContributionsHistoryRepository()
-    var loadingContributions = mutableStateOf(false)
-    var loadingMemberDetails = mutableStateOf(false)
-    val memberData: MutableState<DataOrException<List<MemberDetails>, Exception>> = mutableStateOf(
-        DataOrException(
-            listOf(),
-            Exception("")
-        )
-    )
-
-    init {
-        getMemberDetails()
+//    var loadingContributions = mutableStateOf(false)
+//    var loadingMemberDetails = mutableStateOf(false)
+    fun initialize() {
+    launchCatching {
+        members = storageService.getMembers()
     }
+}
 
-    private fun getMemberDetails() {
-        viewModelScope.launch {
-            loadingMemberDetails.value = true
-            memberData.value = contributionsRepository.getMemberDetailsFromFirestore()
-            loadingMemberDetails.value = false
-        }
-    }
+
+//    private fun getMemberDetails() {
+//        viewModelScope.launch {
+//            loadingMemberDetails.value = true
+//            memberData.value = contributionsRepository.getMemberDetailsFromFirestore()
+//            loadingMemberDetails.value = false
+//        }
+//    }
 
     fun calculateContributionsDifference(totalAmount: Int) : Int {
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.US)

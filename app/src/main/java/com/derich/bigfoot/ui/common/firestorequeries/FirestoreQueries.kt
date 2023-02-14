@@ -1,6 +1,6 @@
 package com.derich.bigfoot.ui.common.firestorequeries
 
-import com.derich.bigfoot.ui.screens.transactions.Transactions
+import com.derich.bigfoot.ui.model.Transactions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import java.text.SimpleDateFormat

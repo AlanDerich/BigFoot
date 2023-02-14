@@ -13,7 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.derich.bigfoot.ui.screens.home.MemberDetails
+import com.derich.bigfoot.ui.model.MemberDetails
 import com.derich.bigfoot.ui.screens.login.AuthViewModel
 import com.derich.bigfoot.ui.theme.BigFootTheme
 

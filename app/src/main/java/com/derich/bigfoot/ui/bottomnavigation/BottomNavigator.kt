@@ -20,11 +20,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.derich.bigfoot.R
 import com.derich.bigfoot.ui.common.composables.CircularProgressBar
+import com.derich.bigfoot.ui.model.MemberDetails
 import com.derich.bigfoot.ui.screens.account.AccountsComposable
 import com.derich.bigfoot.ui.screens.addtransaction.AddTransactionScreen
 import com.derich.bigfoot.ui.screens.home.ContributionsViewModel
 import com.derich.bigfoot.ui.screens.home.HomeComposable
-import com.derich.bigfoot.ui.screens.home.MemberDetails
 import com.derich.bigfoot.ui.screens.loans.LoansComposable
 import com.derich.bigfoot.ui.screens.loans.LoansViewModel
 import com.derich.bigfoot.ui.screens.login.AuthViewModel
@@ -58,7 +58,7 @@ fun BottomNavigator(
                 unselectedContentColor = Color.Black.copy(0.4f),
                 alwaysShowLabel = true,
                 selected = currentRoute == item.screen_route,
-                enabled = contViewModel.memberData.value.data?.isNotEmpty() ?: false,
+                enabled = contViewModel.members.isNotEmpty() ?: false,
                 onClick = {
                     navController.navigate(item.screen_route) {
 
@@ -115,12 +115,12 @@ fun NavigationGraph(
     }
     else{
         CircularProgressBar(
-            isDisplayed = contViewModel.loadingMemberDetails.value
+            isDisplayed = contViewModel.members.isEmpty()
         )
     }
     }
     else{
-        ErrorScreen(contViewModel.memberData.value.e.toString())
+//        ErrorScreen(contViewModel.memberData.value.e.toString())
     }
 
 }
